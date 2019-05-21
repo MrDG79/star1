@@ -965,4 +965,7 @@ async def on_message(msg):
 		if message.content.startswith('!현재시간'):
 			await client.send_message(client.get_channel(channel), datetime.datetime.now().strftime('%H:%M:%S'), tts=False)
 
-client.run(token)
+
+			
+access_token = os.environ["BOT_TOKEN"]			
+client.run(BOT_TOKEN)
