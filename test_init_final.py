@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*- 
 
 import os
-#import sys
-#import asyncio
+import sys
+import asyncio
 import discord
-#import datetime
-#import random
+import datetime
+import random
 #from discord.ext import commands
 #from gtts import gTTS
 #from discord.ext.commands import Bot
