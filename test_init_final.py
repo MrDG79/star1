@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*- 
 
-import sys
-import asyncio
+#import sys
+#import asyncio
 import discord
 #import datetime
 #import random
