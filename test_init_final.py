@@ -1,15 +1,13 @@
 # -*- coding: utf-8 -*- 
 
-import sys
-import asyncio
+#import sys
+#import asyncio
 import discord
-import datetime
-import random
+#import datetime
+#import random
 import os
-from discord.ext import commands
-from gtts import gTTS
-#from discord.ext.commands import Bot
-#from discord.voice_client import VoiceClient
+#from discord.ext import commands
+#from gtts import gTTS
 
 @client.event
 async def on_ready:
