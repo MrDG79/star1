@@ -5,6 +5,7 @@ import asyncio
 import discord
 import datetime
 import random
+import os
 from discord.ext import commands
 from gtts import gTTS
 #from discord.ext.commands import Bot
