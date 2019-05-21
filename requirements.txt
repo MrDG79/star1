@@ -1,2 +1,2 @@
-discord.py[voice]==0.16.12
-gtts
+discord.py==0.16.12
+
