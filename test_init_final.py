@@ -6,7 +6,7 @@ import discord
 import datetime
 import random
 from discord.ext import commands
-from gtts import gTTS
+#from gtts import gTTS
 #from discord.ext.commands import Bot
 #from discord.voice_client import VoiceClient
 
