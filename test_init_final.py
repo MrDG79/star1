@@ -12,7 +12,7 @@ import discord
 
 #if not discord.opus.is_loaded():
 #	discord.opus.load_opus('opus')
-
+'''
 basicSetting = []
 bossData = []
 
@@ -41,6 +41,8 @@ channel_id = []
 channel_voice_name = []
 channel_voice_id = []
 channel_type = []
+'''
+
 client = discord.Client()
 
 @client.event
