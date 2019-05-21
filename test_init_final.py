@@ -6,13 +6,13 @@ import asyncio
 import discord
 import datetime
 import random
-#from discord.ext import commands
-#from gtts import gTTS
+from discord.ext import commands
+from gtts import gTTS
 #from discord.ext.commands import Bot
 #from discord.voice_client import VoiceClient
 
-#if not discord.opus.is_loaded():
-#	discord.opus.load_opus('opus')
+if not discord.opus.is_loaded():
+	discord.opus.load_opus('opus')
 '''
 basicSetting = []
 bossData = []
