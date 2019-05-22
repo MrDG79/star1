@@ -389,6 +389,8 @@ async def dbLoad():
 					tmp_bossTime[j] = bossTime[j] = now2
 					bossTimeString[j] = bossTime[j].strftime('%H:%M:%S')
 					bossDateString[j] = bossTime[j].strftime('%Y-%m-%d')
+					
+					await client.send_message(client.get_channel("503909372511125506"), bossData[j][0] + '  ' + bossTimeString[j] + '  ' + bossDateString[j], tts=False)
 
 					#print (beforeBossData[i+1])
 					if beforeBossData[i+1][len(beforeBossData[i+1])-4:len(beforeBossData[i+1])-3] != 0 :
