@@ -104,10 +104,17 @@ def init():
 	tmp_bossData = []
 	f = []
 	#print("test")
+	'''
+	inidata = repo.get_contents("my_bot.db")
+	file_data1 = base64.b64decode(inidata.content)
+	file_data1 = file_data1.decode('utf-8')
+	inputData = file_data1.split('\n')
+	'''
 	inidata = open('test_setting.ini', 'r', encoding = 'utf-8')
 	
 	inputData = inidata.readlines()
 	#print("test1")
+
 	for i in range(inputData.count('\n')):
 		inputData.remove('\n')
 
@@ -347,6 +354,7 @@ async def dbLoad():
 	contents1 = repo.get_contents("my_bot.db")
 	file_data = base64.b64decode(contents1.content)
 	file_data = file_data.decode('utf-8')
+	await client.send_message(client.get_channel("503909372511125506"), file_data, tts=False)
 	beforeBossData = file_data.split('\n')
 	
 	if len(beforeBossData) > 1:		
