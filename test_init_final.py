@@ -848,6 +848,7 @@ async def on_message(msg):
 						tmp_now = tmp_now + deltaTime
 						bossMungCnt[i] = bossMungCnt[i] + 1
 					now2 = tmp_now
+					bossMungCnt[i] = bossMungCnt[i] - 1
 				else :
 					now2 = now2 + datetime.timedelta(hours = int(bossData[i][1]), minutes = int(bossData[i][5]))
 							
