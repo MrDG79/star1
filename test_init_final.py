@@ -561,6 +561,9 @@ async def on_message(msg):
 					now2 = datetime.datetime.now() + datetime.timedelta(hours = 9, seconds = -10)
 					tmp_now = datetime.datetime.now() + datetime.timedelta(hours = 9, seconds = -10)
 					
+				await client.send_message(client.get_channel(channel), now2, tts=False)
+				await client.send_message(client.get_channel(channel), tmp_now, tts=False)
+					
 				bossFlag[i] = False
 				bossFlag0[i] = False
 				bossMungFlag[i] = False
@@ -568,6 +571,7 @@ async def on_message(msg):
 
 				if tmp_now > now2 :
 					tmp_now = tmp_now + datetime.timedelta(days=int(-1))
+					await client.send_message(client.get_channel(channel), 'tmp_now > now2', tts=False)
 					
 				if tmp_now < now2 : 
 					deltaTime = datetime.timedelta(hours = int(bossData[i][1]), minutes = int(bossData[i][5]))
@@ -576,8 +580,10 @@ async def on_message(msg):
 						bossMungCnt[i] = bossMungCnt[i] + 1
 					now2 = tmp_now
 					bossMungCnt[i] = bossMungCnt[i] - 1
+					await client.send_message(client.get_channel(channel), 'tmp_now < now2', tts=False)
 				else :
 					now2 = now2 + datetime.timedelta(hours = int(bossData[i][1]), minutes = int(bossData[i][5]))
+					await client.send_message(client.get_channel(channel), 'tmp_now = now2', tts=False)
 							
 				tmp_bossTime[i] = bossTime[i] = nextTime = now2
 				tmp_bossTimeString[i] = bossTimeString[i] = nextTime.strftime('%H:%M:%S')
