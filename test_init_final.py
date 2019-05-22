@@ -830,7 +830,7 @@ async def on_message(msg):
 						tmp_now = tmp_now.replace(hour=int(hours1), minute=int(minutes1))
 				else:
 					now2 = datetime.datetime.now() + datetime.timedelta(hours = 9)
-					tmp_now = datetime.datetime.now() + datetime.timedelta(hours = 9)
+					tmp_now = now2
 					
 				bossFlag[i] = False
 				bossFlag0[i] = False
