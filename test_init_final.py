@@ -258,7 +258,7 @@ async def my_background_task():
 								color=0xff0000
 								)
 							await client.send_message(client.get_channel(channel), embed=embed, tts=False)
-							#await dbSave()
+							await dbSave()
 						else :
 							await client.send_message(client.get_channel(channel), bossData[i][0] + ' 멍 입니다.')
 							await PlaySound(voice_client1, './sound/' + bossData[i][0] + '멍.mp3')
@@ -274,7 +274,7 @@ async def my_background_task():
 								color=0xff0000
 								)
 							await client.send_message(client.get_channel(channel), embed=embed, tts=False)
-							#await dbSave()
+							await dbSave()
 											
 		await asyncio.sleep(1) # task runs every 60 seconds
 		
@@ -598,7 +598,7 @@ async def on_message(msg):
 						color=0xff0000
 						)
 				await client.send_message(client.get_channel(channel), embed=embed, tts=False)
-				#await dbSave()
+				await dbSave()
 
 		##################################
 
@@ -643,7 +643,7 @@ async def on_message(msg):
 						color=0xff0000
 						)
 				await client.send_message(client.get_channel(channel), embed=embed, tts=False)
-				#await dbSave()
+				await dbSave()
 				
 			if message.content.startswith(bossData[i][0] +'삭제'):
 				bossTime[i] = datetime.datetime.now()+datetime.timedelta(days=365, hours = 9)
@@ -657,7 +657,7 @@ async def on_message(msg):
 				bossMungFlag[i] = (False)
 				bossMungCnt[i] = 0
 				await client.send_message(client.get_channel(channel), '<' + bossData[i][0] + ' 삭제완료>', tts=False)
-				#await dbSave()
+				await dbSave()
 				print ('<' + bossData[i][0] + ' 삭제완료>')
 			
 		if message.content.startswith('!오빠'):
