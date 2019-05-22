@@ -357,11 +357,13 @@ async def dbLoad():
 	await client.send_message(client.get_channel("503909372511125506"), file_data, tts=False)
 	beforeBossData = file_data.split('\n')
 	
-	await client.send_message(client.get_channel("503909372511125506"), len(beforeBossData), tts=False)
+	await client.send_message(client.get_channel("503909372511125506"), len(beforeBossData) + '   LoadChk    ' + LoadChk, tts=False)
 	
 	if len(beforeBossData) > 1:	
 		for i in range(len(beforeBossData)-1):
+			await client.send_message(client.get_channel("503909372511125506"), '첫번째 포문 ' + i, tts=False)
 			for j in range(bossNum):
+				await client.send_message(client.get_channel("503909372511125506"), '두번째 포문 ' + j + '  bossnum : ' + bossNum, tts=False)
 				if beforeBossData[i+1].find(bossData[j][0]) != -1 :
 					#bossMungCnt[j] = 0
 					await client.send_message(client.get_channel("503909372511125506"), i + '   ' + beforeBossData[i+1] + '     ' + bossData[j][0], tts=False)
@@ -405,6 +407,7 @@ async def dbLoad():
 		print ("<불러오기 완료>")
 	else:
 		#await client.send_message(client.get_channel(channel), '<보스타임 정보가 없습니다.>', tts=False)
+		await client.send_message(client.get_channel("503909372511125506"), 'else문임   ' + LoadChk, tts=False)
 		LoadChk = 1
 		print ("보스타임 정보가 없습니다.")
 
@@ -594,7 +597,6 @@ async def on_message(msg):
 
 				if tmp_now > now2 :
 					tmp_now = tmp_now + datetime.timedelta(days=int(-1))
-					await client.send_message(client.get_channel(channel), 'tmp_now > now2', tts=False)
 					
 				if tmp_now < now2 : 
 					deltaTime = datetime.timedelta(hours = int(bossData[i][1]), minutes = int(bossData[i][5]))
@@ -603,10 +605,8 @@ async def on_message(msg):
 						bossMungCnt[i] = bossMungCnt[i] + 1
 					now2 = tmp_now
 					bossMungCnt[i] = bossMungCnt[i] - 1
-					await client.send_message(client.get_channel(channel), 'tmp_now < now2', tts=False)
 				else :
 					now2 = now2 + datetime.timedelta(hours = int(bossData[i][1]), minutes = int(bossData[i][5]))
-					await client.send_message(client.get_channel(channel), 'tmp_now = now2', tts=False)
 							
 				tmp_bossTime[i] = bossTime[i] = nextTime = now2
 				tmp_bossTimeString[i] = bossTimeString[i] = nextTime.strftime('%H:%M:%S')
