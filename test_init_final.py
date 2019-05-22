@@ -9,6 +9,7 @@ import random
 from discord.ext import commands
 from gtts import gTTS
 from github import Github
+import base64
 
 #from discord.ext.commands import Bot
 #from discord.voice_client import VoiceClient
@@ -51,7 +52,8 @@ client = discord.Client()
 git_access_token = os.environ["GIT_TOKEN"]			
 g = Github(git_access_token)
 
-repo = g.get_repo("chochul12/bossbot")
+git_access_repo = os.environ["GIT_REPO"]			
+repo = g.get_repo(git_access_repo)
 '''
 @client.event
 async def on_ready():
@@ -341,10 +343,13 @@ async def dbSave():
 
 async def dbLoad():
 	global LoadChk
-	try:
-		file = open('my_bot.db', 'r')
-		beforeBossData = file.readlines()
-		
+	
+	contents1 = repo.get_contents("my_bot.db")
+	file_data = base64.b64decode(contents1.content)
+	file_data = file_data.decode('utf-8')
+	beforeBossData = file_data.split('\n')
+	
+	if len(beforeBossData) > 1:		
 		for i in range(len(beforeBossData)-1):
 			for j in range(bossNum):
 				if beforeBossData[i+1].find(bossData[j][0]) != -1 :
@@ -384,12 +389,9 @@ async def dbLoad():
 					else:
 						bossMungCnt[j] = 0
 
-					
-		file.close()
-		#await client.send_message(client.get_channel(channel), '<불러오기 완료>', tts=False)
 		LoadChk = 0
 		print ("<불러오기 완료>")
-	except IOError:
+	else:
 		#await client.send_message(client.get_channel(channel), '<보스타임 정보가 없습니다.>', tts=False)
 		LoadChk = 1
 		print ("보스타임 정보가 없습니다.")
