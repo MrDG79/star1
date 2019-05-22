@@ -547,8 +547,8 @@ async def on_message(msg):
 						chkpos = hello.find(':')
 						hours1 = hello[chkpos-2:chkpos]
 						minutes1 = hello[chkpos+1:chkpos+3]
-						now2 = datetime.datetime.now() + datetime.timedelta(hours = 9, seconds = 10, seconds = 10)
-						tmp_now = datetime.datetime.now() + datetime.timedelta(hours = 9, seconds = 10, seconds = 10)
+						now2 = datetime.datetime.now() + datetime.timedelta(hours = 9, seconds = 10)
+						tmp_now = datetime.datetime.now() + datetime.timedelta(hours = 9, seconds = 10)
 						tmp_now = tmp_now.replace(hour=int(hours1), minute=int(minutes1))
 					else:
 						chkpos = len(hello)-2
