@@ -357,12 +357,14 @@ async def dbLoad():
 	await client.send_message(client.get_channel("503909372511125506"), file_data, tts=False)
 	beforeBossData = file_data.split('\n')
 	
-	if len(beforeBossData) > 1:		
+	await client.send_message(client.get_channel("503909372511125506"), len(beforeBossData), tts=False)
+	
+	if len(beforeBossData) > 1:	
 		for i in range(len(beforeBossData)-1):
 			for j in range(bossNum):
 				if beforeBossData[i+1].find(bossData[j][0]) != -1 :
 					#bossMungCnt[j] = 0
-					
+					await client.send_message(client.get_channel("503909372511125506"), i + '   ' + beforeBossData[i+1] + '     ' + bossData[j][0], tts=False)
 					tmp_len = beforeBossData[i+1].find(':')
 					tmp_datelen = beforeBossData[i+1].find('@')
 					
