@@ -8,6 +8,8 @@ import datetime
 import random
 from discord.ext import commands
 from gtts import gTTS
+from github import Github
+
 #from discord.ext.commands import Bot
 #from discord.voice_client import VoiceClient
 
@@ -45,6 +47,11 @@ channel_type = []
 
 
 client = discord.Client()
+
+git_access_token = os.environ["GIT_TOKEN"]			
+g = Github(git_access_token)
+
+repo = g.get_repo("chochul12/bossbot")
 '''
 @client.event
 async def on_ready():
@@ -260,7 +267,7 @@ async def my_background_task():
 								color=0xff0000
 								)
 							await client.send_message(client.get_channel(channel), embed=embed, tts=False)
-							await dbSave()
+							#await dbSave()
 						else :
 							await client.send_message(client.get_channel(channel), bossData[i][0] + ' 멍 입니다.')
 							await PlaySound(voice_client1, './sound/' + bossData[i][0] + '멍.mp3')
@@ -276,7 +283,7 @@ async def my_background_task():
 								color=0xff0000
 								)
 							await client.send_message(client.get_channel(channel), embed=embed, tts=False)
-							await dbSave()
+							#await dbSave()
 											
 		await asyncio.sleep(1) # task runs every 60 seconds
 		
@@ -325,10 +332,12 @@ async def dbSave():
 						information1 += ' - ' + bossData[i][0] + '(' + bossData[i][1] + '.' + bossData[i][5] + ') : ' + bossTimeString[i] + ' @ ' + bossDateString[i] + ' (미입력 ' + str(bossMungCnt[i]) + '회)' + '\n'
 					else : 
 						information1 += ' - ' + bossData[i][0] + '(' + bossData[i][1] + '.' + bossData[i][5] + ') : ' + bossTimeString[i] + ' @ ' + bossDateString[i] + ' (멍 ' + str(bossMungCnt[i]) + '회)' + '\n'
-		
-	file = open("my_bot.db", 'w')
-	file.write(information1)
-	file.close()
+	
+	contents = repo.get_contents("my_bot.db")
+	repo.update_file(contents.path, "bossDB", information1, contents.sha)
+	#file = open("my_bot.db", 'w')
+	#file.write(information1)
+	#file.close()
 
 async def dbLoad():
 	global LoadChk
@@ -596,7 +605,7 @@ async def on_message(msg):
 						color=0xff0000
 						)
 				await client.send_message(client.get_channel(channel), embed=embed, tts=False)
-				await dbSave()
+				#await dbSave()
 
 		##################################
 
@@ -641,7 +650,7 @@ async def on_message(msg):
 						color=0xff0000
 						)
 				await client.send_message(client.get_channel(channel), embed=embed, tts=False)
-				await dbSave()
+				#await dbSave()
 				
 			if message.content.startswith(bossData[i][0] +'삭제'):
 				bossTime[i] = datetime.datetime.now()+datetime.timedelta(days=365, hours = 9)
@@ -655,7 +664,7 @@ async def on_message(msg):
 				bossMungFlag[i] = (False)
 				bossMungCnt[i] = 0
 				await client.send_message(client.get_channel(channel), '<' + bossData[i][0] + ' 삭제완료>', tts=False)
-				await dbSave()
+				#await dbSave()
 				print ('<' + bossData[i][0] + ' 삭제완료>')
 			
 		if message.content.startswith('!오빠'):
