@@ -54,19 +54,7 @@ g = Github(git_access_token)
 
 git_access_repo = os.environ["GIT_REPO"]			
 repo = g.get_repo(git_access_repo)
-'''
-@client.event
-async def on_ready():
-	print ("login")
-	print (client.user.name)
-	print (client.user.id)
-	print ("-----------------------")
 
-@client.event
-async def on_message(message):
-	if message.content.startswith("hi"):
-		await client.send_message(message.channel, "HI")
-'''
 def init():
 	global basicSetting
 	global bossData
@@ -103,21 +91,14 @@ def init():
 	tmp_bossData = []
 	f = []
 	#print("test")
-	'''
-	inidata = repo.get_contents("my_bot.db")
+	
+	inidata = repo.get_contents("test_setting.ini")
 	file_data1 = base64.b64decode(inidata.content)
 	file_data1 = file_data1.decode('utf-8')
 	inputData = file_data1.split('\n')
-	'''
-	inidata = open('test_setting.ini', 'r', encoding = 'utf-8')
-	
-	inputData = inidata.readlines()
-	
-	await client.send_message(client.get_channel("503909372511125506"), inputData, tts=False)
-	#print("test1")
 
-	for i in range(inputData.count('\n')):
-		inputData.remove('\n')
+	for i in range(inputData.count('\r')):
+		inputData.remove('\r')
 
 	basicSetting.append(inputData[0][12:])
 	basicSetting.append(inputData[1][15:])
@@ -169,7 +150,7 @@ def init():
 		bossMungFlag.append(False)
 		bossMungCnt.append(0)
 		
-	inidata.close()
+	#inidata.close()
 
 init()
 
@@ -355,22 +336,18 @@ async def dbLoad():
 	contents1 = repo.get_contents("my_bot.db")
 	file_data = base64.b64decode(contents1.content)
 	file_data = file_data.decode('utf-8')
-	await client.send_message(client.get_channel("503909372511125506"), file_data, tts=False)
+	print (file_data)
 	beforeBossData = file_data.split('\n')
-	
-	#await client.send_message(client.get_channel("503909372511125506"), len(beforeBossData) + '   LoadChk    ' + LoadChk, tts=False)
-	await client.send_message(client.get_channel("503909372511125506"), len(beforeBossData), tts=False)
 	
 	if len(beforeBossData) > 1:	
 		for i in range(len(beforeBossData)-1):
-			await client.send_message(client.get_channel("503909372511125506"), '첫번째 포문 ' + i + '  bossNum' + bossNum, tts=False)
 			for j in range(bossNum):
-				await client.send_message(client.get_channel("503909372511125506"), '두번째 포문 ' + j + '  bossnum : ' + bossNum, tts=False)
 				if beforeBossData[i+1].find(bossData[j][0]) != -1 :
 					#bossMungCnt[j] = 0
-					await client.send_message(client.get_channel("503909372511125506"), i + '   ' + beforeBossData[i+1] + '     ' + bossData[j][0], tts=False)
+					print (str(i) + '   '  + beforeBossData[i+1] + '     ' + bossData[j][0])
 					tmp_len = beforeBossData[i+1].find(':')
 					tmp_datelen = beforeBossData[i+1].find('@')
+
 					
 					years1 = beforeBossData[i+1][tmp_datelen+2:tmp_datelen+6]
 					months1 = beforeBossData[i+1][tmp_datelen+7:tmp_datelen+9]
@@ -396,20 +373,20 @@ async def dbLoad():
 					bossTimeString[j] = bossTime[j].strftime('%H:%M:%S')
 					bossDateString[j] = bossTime[j].strftime('%Y-%m-%d')
 					
-					await client.send_message(client.get_channel("503909372511125506"), bossData[j][0] + '  ' + bossTimeString[j] + '  ' + bossDateString[j], tts=False)
+					print (bossData[j][0] + '  ' + bossTimeString[j] + '  ' + bossDateString[j])
 
-					#print (beforeBossData[i+1])
-					if beforeBossData[i+1][len(beforeBossData[i+1])-4:len(beforeBossData[i+1])-3] != 0 :
-						bossMungCnt[j] = int(beforeBossData[i+1][len(beforeBossData[i+1])-4:len(beforeBossData[i+1])-3])
+					print (beforeBossData[i+1])
+					print (len(beforeBossData[i+1]))
+					print (beforeBossData[i+1][len(beforeBossData[i+1])-3:len(beforeBossData[i+1])-2])
+					if beforeBossData[i+1][len(beforeBossData[i+1])-3:len(beforeBossData[i+1])-2] != 0 :
+						bossMungCnt[j] = int(beforeBossData[i+1][len(beforeBossData[i+1])-3:len(beforeBossData[i+1])-2])
 						#print (bossMungCnt)
 					else:
 						bossMungCnt[j] = 0
-
 		LoadChk = 0
 		print ("<불러오기 완료>")
 	else:
 		#await client.send_message(client.get_channel(channel), '<보스타임 정보가 없습니다.>', tts=False)
-		await client.send_message(client.get_channel("503909372511125506"), 'else문임   ' + LoadChk, tts=False)
 		LoadChk = 1
 		print ("보스타임 정보가 없습니다.")
 
@@ -589,8 +566,8 @@ async def on_message(msg):
 					now2 = datetime.datetime.now() + datetime.timedelta(hours = 9)
 					tmp_now = now2
 					
-				await client.send_message(client.get_channel(channel), now2, tts=False)
-				await client.send_message(client.get_channel(channel), tmp_now, tts=False)
+				#await client.send_message(client.get_channel(channel), now2, tts=False)
+				#await client.send_message(client.get_channel(channel), tmp_now, tts=False)
 					
 				bossFlag[i] = False
 				bossFlag0[i] = False
