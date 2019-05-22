@@ -99,7 +99,6 @@ def init():
 	global channel_voice_id
 	global channel_id
 	global channel_type
-	global LoadChk
 	
 	tmp_bossData = []
 	f = []
@@ -113,6 +112,8 @@ def init():
 	inidata = open('test_setting.ini', 'r', encoding = 'utf-8')
 	
 	inputData = inidata.readlines()
+	
+	await client.send_message(client.get_channel("503909372511125506"), inputData, tts=False)
 	#print("test1")
 
 	for i in range(inputData.count('\n')):
@@ -357,11 +358,12 @@ async def dbLoad():
 	await client.send_message(client.get_channel("503909372511125506"), file_data, tts=False)
 	beforeBossData = file_data.split('\n')
 	
-	await client.send_message(client.get_channel("503909372511125506"), len(beforeBossData) + '   LoadChk    ' + LoadChk, tts=False)
+	#await client.send_message(client.get_channel("503909372511125506"), len(beforeBossData) + '   LoadChk    ' + LoadChk, tts=False)
+	await client.send_message(client.get_channel("503909372511125506"), len(beforeBossData), tts=False)
 	
 	if len(beforeBossData) > 1:	
 		for i in range(len(beforeBossData)-1):
-			await client.send_message(client.get_channel("503909372511125506"), '첫번째 포문 ' + i, tts=False)
+			await client.send_message(client.get_channel("503909372511125506"), '첫번째 포문 ' + i + '  bossNum' + bossNum, tts=False)
 			for j in range(bossNum):
 				await client.send_message(client.get_channel("503909372511125506"), '두번째 포문 ' + j + '  bossnum : ' + bossNum, tts=False)
 				if beforeBossData[i+1].find(bossData[j][0]) != -1 :
