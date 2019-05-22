@@ -141,8 +141,8 @@ def init():
 	print ('보스멍확인시간 : ', basicSetting[2])
 	
 	for i in range(bossNum):
-		bossTime.append(datetime.datetime.now()+datetime.timedelta(days=365, hours = 15))
-		tmp_bossTime.append(datetime.datetime.now()+datetime.timedelta(days=365, hours = 15))
+		bossTime.append(datetime.datetime.now()+datetime.timedelta(days=365, hours = 9))
+		tmp_bossTime.append(datetime.datetime.now()+datetime.timedelta(days=365, hours = 9))
 		bossTimeString.append('99:99:99')
 		bossDateString.append('9999-99-99')
 		tmp_bossTimeString.append('')
@@ -202,7 +202,7 @@ async def my_background_task():
 	global channel_type
 
 	while not client.is_closed:
-		now = datetime.datetime.now() + datetime.timedelta(hours = 15)
+		now = datetime.datetime.now() + datetime.timedelta(hours = 9)
 		priv0 = now+datetime.timedelta(minutes=int(basicSetting[3]))
 		priv = now+datetime.timedelta(minutes=int(basicSetting[1]))
 		privTimeString = priv.strftime('%H:%M:%S')
@@ -352,9 +352,9 @@ async def dbLoad():
 					minutes1 = beforeBossData[i+1][tmp_len+5:tmp_len+7]
 					seconds1 = beforeBossData[i+1][tmp_len+8:tmp_len+10]
 					
-					now2 = datetime.datetime.now() + datetime.timedelta(hours = 15)
+					now2 = datetime.datetime.now() + datetime.timedelta(hours = 9)
 
-					tmp_now = datetime.datetime.now() + datetime.timedelta(hours = 15)
+					tmp_now = datetime.datetime.now() + datetime.timedelta(hours = 9)
 					tmp_now = tmp_now.replace(year = int(years1), month = int(months1), day = int(days1), hour=int(hours1), minute=int(minutes1), second = int(seconds1))
 
 					if tmp_now < now2 : 
@@ -547,19 +547,19 @@ async def on_message(msg):
 						chkpos = hello.find(':')
 						hours1 = hello[chkpos-2:chkpos]
 						minutes1 = hello[chkpos+1:chkpos+3]
-						now2 = datetime.datetime.now() + datetime.timedelta(hours = 15)
-						tmp_now = datetime.datetime.now() + datetime.timedelta(hours = 15)
+						now2 = datetime.datetime.now() + datetime.timedelta(hours = 9)
+						tmp_now = datetime.datetime.now() + datetime.timedelta(hours = 9)
 						tmp_now = tmp_now.replace(hour=int(hours1), minute=int(minutes1))
 					else:
 						chkpos = len(hello)-2
 						hours1 = hello[chkpos-2:chkpos]
 						minutes1 = hello[chkpos:chkpos+2]
-						now2 = datetime.datetime.now() + datetime.timedelta(hours = 15)
-						tmp_now = datetime.datetime.now() + datetime.timedelta(hours = 15)
+						now2 = datetime.datetime.now() + datetime.timedelta(hours = 9)
+						tmp_now = datetime.datetime.now() + datetime.timedelta(hours = 9)
 						tmp_now = tmp_now.replace(hour=int(hours1), minute=int(minutes1))
 				else:
-					now2 = datetime.datetime.now() + datetime.timedelta(hours = 15)
-					tmp_now = datetime.datetime.now() + datetime.timedelta(hours = 15)
+					now2 = datetime.datetime.now() + datetime.timedelta(hours = 9)
+					tmp_now = datetime.datetime.now() + datetime.timedelta(hours = 9)
 					
 				bossFlag[i] = False
 				bossFlag0[i] = False
@@ -596,7 +596,7 @@ async def on_message(msg):
 
 			if message.content.startswith(bossData[i][0] +'멍'):
 				tmp_msg = bossData[i][0] +'멍'
-				tmp_now = datetime.datetime.now() + datetime.timedelta(hours = 15)
+				tmp_now = datetime.datetime.now() + datetime.timedelta(hours = 9)
 				temptime = tmp_bossTime[i]
 				if len(hello) > len(tmp_msg) + 3 :
 					if hello.find(':') != -1 :
@@ -638,8 +638,8 @@ async def on_message(msg):
 				await dbSave()
 				
 			if message.content.startswith(bossData[i][0] +'삭제'):
-				bossTime[i] = datetime.datetime.now()+datetime.timedelta(days=365, hours = 15)
-				tmp_bossTime[i] =  datetime.datetime.now()+datetime.timedelta(days=365, hours = 15)
+				bossTime[i] = datetime.datetime.now()+datetime.timedelta(days=365, hours = 9)
+				tmp_bossTime[i] =  datetime.datetime.now()+datetime.timedelta(days=365, hours = 9)
 				bossTimeString[i] = '99:99:99'
 				bossDateString[i] = '9999-99-99'
 				tmp_bossTimeString[i] = ''
@@ -812,19 +812,19 @@ async def on_message(msg):
 						chkpos = hello.find(':')
 						hours1 = hello[chkpos-2:chkpos]
 						minutes1 = hello[chkpos+1:chkpos+3]
-						now2 = datetime.datetime.now() + datetime.timedelta(hours = 15)
-						tmp_now = datetime.datetime.now() + datetime.timedelta(hours = 15)
+						now2 = datetime.datetime.now() + datetime.timedelta(hours = 9)
+						tmp_now = datetime.datetime.now() + datetime.timedelta(hours = 9)
 						tmp_now = tmp_now.replace(hour=int(hours1), minute=int(minutes1))
 					else:
 						chkpos = len(hello)-2
 						hours1 = hello[chkpos-2:chkpos]
 						minutes1 = hello[chkpos:chkpos+2]
-						now2 = datetime.datetime.now() + datetime.timedelta(hours = 15)
-						tmp_now = datetime.datetime.now() + datetime.timedelta(hours = 15)
+						now2 = datetime.datetime.now() + datetime.timedelta(hours = 9)
+						tmp_now = datetime.datetime.now() + datetime.timedelta(hours = 9)
 						tmp_now = tmp_now.replace(hour=int(hours1), minute=int(minutes1))
 				else:
-					now2 = datetime.datetime.now() + datetime.timedelta(hours = 15)
-					tmp_now = datetime.datetime.now() + datetime.timedelta(hours = 15)
+					now2 = datetime.datetime.now() + datetime.timedelta(hours = 9)
+					tmp_now = datetime.datetime.now() + datetime.timedelta(hours = 9)
 					
 				bossFlag[i] = False
 				bossFlag0[i] = False
@@ -892,7 +892,7 @@ async def on_message(msg):
 			
 			for i in range(bossNum):
 				if sorted_datelist[0] == bossTime[i]:
-					leftTime = bossTime[i] - datetime.datetime.now() + datetime.timedelta(hours = 15)
+					leftTime = bossTime[i] - datetime.datetime.now() + datetime.timedelta(hours = 9)
 			
 					#print (leftTime)
 					#leftTimeStr = leftTime.strftime('%H:%M:%S')
@@ -976,7 +976,7 @@ async def on_message(msg):
 		##################################
 
 		if message.content.startswith('!현재시간'):
-			now3 = datetime.datetime.now() + datetime.timedelta(hours = 15)
+			now3 = datetime.datetime.now() + datetime.timedelta(hours = 9)
 			await client.send_message(client.get_channel(channel), now3.strftime('%Y-%m-%d') + '   ' + now3.strftime('%H:%M:%S'), tts=False)
 
 
