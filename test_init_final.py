@@ -339,7 +339,9 @@ async def dbSave():
 						tmp_time22 = str(tmp_time2)
 					bossTimeString[j] = tmp_time1 + tmp_time22
 					
-	datelist = bossTime
+	datelist1 = bossTime
+	
+	datelist = set(datelist1)
 
 	information1 = '----- 보스탐 정보 -----\n'
 	for timestring in sorted(datelist):
