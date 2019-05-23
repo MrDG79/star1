@@ -11,9 +11,6 @@ from gtts import gTTS
 from github import Github
 import base64
 
-#from discord.ext.commands import Bot
-#from discord.voice_client import VoiceClient
-
 if not discord.opus.is_loaded():
 	discord.opus.load_opus('opus')
 
@@ -49,11 +46,21 @@ channel_type = []
 
 client = discord.Client()
 
-git_access_token = os.environ["GIT_TOKEN"]			
-g = Github(git_access_token)
+'''
+access_token = 'NTAzOTA5NDIyMzg5NTI2NTI5.Dq9WAA.3Z3HAgSvYi6I3tg56Eg8TQzcJu8'	
+git_access_token = 'e182e4cc3d4609f903e8fd3220a957db97beab3a'
+git_access_repo = 'chochul12/bossbotDB'
+git_access_repo_restart = 'chochul12/bossbot'
+'''
 
+access_token = os.environ["BOT_TOKEN"]			
+git_access_token = os.environ["GIT_TOKEN"]			
 git_access_repo = os.environ["GIT_REPO"]			
+git_access_repo_restart = os.environ["GIT_REPO_RESTART"]			
+
+g = Github(git_access_token)
 repo = g.get_repo(git_access_repo)
+repo_restart = g.get_repo(git_access_repo_restart)
 
 def init():
 	global basicSetting
@@ -100,22 +107,27 @@ def init():
 	for i in range(inputData.count('\r')):
 		inputData.remove('\r')
 
-	basicSetting.append(inputData[0][12:])
-	basicSetting.append(inputData[1][15:])
-	basicSetting.append(inputData[3][10:])
-	basicSetting.append(inputData[2][15:])
+	basicSetting.append(inputData[0][11:])   #timezone
+	basicSetting.append(inputData[4][15:])   #before_alert
+	basicSetting.append(inputData[6][10:])   #mungChk
+	basicSetting.append(inputData[5][16:])   #before_alert1
+	basicSetting.append(inputData[1][14:16]) #restarttime 시
+	basicSetting.append(inputData[1][17:])   #restarttime 분
+	basicSetting.append(inputData[2][15:])   #voice채널 ID
+	basicSetting.append(inputData[3][14:])   #text채널 ID
+
 
 	for i in range(len(basicSetting)):
 		basicSetting[i] = basicSetting[i].strip()
 	
 	#print (inputData, len(inputData))
 	
-	bossNum = int((len(inputData)-4)/5)
+	bossNum = int((len(inputData)-7)/5)
 	
 	#print (bossNum)
 	
 	for i in range(bossNum):
-		tmp_bossData.append(inputData[i*5+4:i*5+9])
+		tmp_bossData.append(inputData[i*5+7:i*5+12])
 		
 	#print (tmp_bossData)
 		
@@ -133,14 +145,15 @@ def init():
 		f.append(tmp_bossData[j][1][tmp_len+1:])  #5 : 분
 		bossData.append(f)
 		f = []
-		
+
+	print ('보탐봇 재시작 시간 : ', basicSetting[4], '시 ', basicSetting[5], '분')
 	print ('보스젠알림시간1 : ', basicSetting[1])
 	print ('보스젠알림시간2 : ', basicSetting[3])
 	print ('보스멍확인시간 : ', basicSetting[2])
 	
 	for i in range(bossNum):
-		bossTime.append(datetime.datetime.now()+datetime.timedelta(days=365, hours = 9))
-		tmp_bossTime.append(datetime.datetime.now()+datetime.timedelta(days=365, hours = 9))
+		bossTime.append(datetime.datetime.now()+datetime.timedelta(days=365, hours = int(basicSetting[0])))
+		tmp_bossTime.append(datetime.datetime.now()+datetime.timedelta(days=365, hours = int(basicSetting[0])))
 		bossTimeString.append('99:99:99')
 		bossDateString.append('9999-99-99')
 		tmp_bossTimeString.append('')
@@ -154,9 +167,7 @@ def init():
 
 init()
 
-nowTimeString = '1'
-	
-token = basicSetting[0]
+#token = basicSetting[0]
 
 #channel = basicSetting[3]
 channel = ''
@@ -165,8 +176,7 @@ async def my_background_task():
 	await client.wait_until_ready()
 
 	global channel
-	global nowTimeString
-	
+		
 	global basicSetting
 	global bossData
 
@@ -200,17 +210,33 @@ async def my_background_task():
 	global channel_type
 
 	while not client.is_closed:
-		now = datetime.datetime.now() + datetime.timedelta(hours = 9)
+		endTime = datetime.datetime.now()
+		'''
+		endTime = endTime.replace(hour=int(basicSetting[4]), minute=int(basicSetting[5]), second = int(0))
+		now = datetime.datetime.now()
+		'''
+		endTime = endTime.replace(hour=int(basicSetting[4]), minute=int(basicSetting[5]), second = int(0)) + datetime.timedelta(hours = int(basicSetting[0]))
+		now = datetime.datetime.now() + datetime.timedelta(hours = int(basicSetting[0]))
 		priv0 = now+datetime.timedelta(minutes=int(basicSetting[3]))
 		priv = now+datetime.timedelta(minutes=int(basicSetting[1]))
-		privTimeString = priv.strftime('%H:%M:%S')
-		nowTimeString = now.strftime('%H:%M:%S')
 		aftr = now+datetime.timedelta(minutes=int(0-int(basicSetting[2])))
-		aftrTimeString = aftr.strftime('%H:%M:%S')
-		#print('loop check ' + bossTime[0].strftime('%H:%M:%S') + ' ' + nowTimeString + ' ' + privTimeString, '	' + aftrTimeString)
-		#print('loop check ' + str(bossTime[0]) + ' ' + str(now) + ' ' + str(priv), '	' + str(aftr))
-
+		
 		if channel != '':
+			if endTime == now:
+				await client.send_message(client.get_channel(channel), '<보탐봇 화장실 갔다올 시간! 접속완료 후 명령어 입력 해주세요!>', tts=False)
+				
+				inidata_restart = repo_restart.get_contents("restart.txt")
+				file_data_restart = base64.b64decode(inidata_restart.content)
+				file_data_restart = file_data_restart.decode('utf-8')
+				inputData_restart = file_data_restart.split('\n')
+				
+				if len(inputData_restart) < 3:	
+					contents12 = repo_restart.get_contents("restart.txt")
+					repo_restart.update_file(contents12.path, "restart_0", "restart\nrestart\nrestrat\n", contents12.sha)
+				else:
+					contents12 = repo_restart.get_contents("restart.txt")
+					repo_restart.update_file(contents12.path, "restart_1", "", contents12.sha)
+
 			for i in range(bossNum):
 				#print (bossData[i][0], bossTime[i])
 				if bossTime[i] <= priv0 and bossTime[i] > priv:
@@ -243,38 +269,39 @@ async def my_background_task():
 				
 				if bossMungFlag[i] == True:
 					if (bossTime[i]+datetime.timedelta(days=-365)) <= aftr:
-						if bossData[i][2] == '0':
-							await client.send_message(client.get_channel(channel), bossData[i][0] + ' 미입력 됐습니다.', tts=False)
-							await PlaySound(voice_client1, './sound/' + bossData[i][0] + '미입력.mp3')
-							bossFlag[i] = False
-							bossFlag0[i] = False
-							bossMungFlag[i] = False
-							bossMungCnt[i] = bossMungCnt[i] + 1
-							tmp_bossTime[i] = bossTime[i] = nextTime = now+datetime.timedelta(hours=int(bossData[i][1]), minutes=int(0-int(basicSetting[2])+int(bossData[i][5])))
-							tmp_bossTimeString[i] = bossTimeString[i] = nextTime.strftime('%H:%M:%S')
-							tmp_bossDateString[i] = bossDateString[i] = nextTime.strftime('%Y-%m-%d')
-							embed = discord.Embed(
-								description= '다음 ' + bossData[i][0] + ' ' + bossTimeString[i] + '입니다.',
-								color=0xff0000
-								)
-							await client.send_message(client.get_channel(channel), embed=embed, tts=False)
-							await dbSave()
-						else :
-							await client.send_message(client.get_channel(channel), bossData[i][0] + ' 멍 입니다.')
-							await PlaySound(voice_client1, './sound/' + bossData[i][0] + '멍.mp3')
-							bossFlag[i] = False
-							bossFlag0[i] = False
-							bossMungFlag[i] = False
-							bossMungCnt[i] = bossMungCnt[i] + 1
-							tmp_bossTime[i] = bossTime[i] = nextTime = now+datetime.timedelta(hours=int(bossData[i][1]), minutes=int(0-int(basicSetting[2])+int(bossData[i][5])))
-							tmp_bossTimeString[i] = bossTimeString[i] = nextTime.strftime('%H:%M:%S')
-							tmp_bossDateString[i] = bossDateString[i] = nextTime.strftime('%Y-%m-%d')
-							embed = discord.Embed(
-								description= '다음 ' + bossData[i][0] + ' ' + bossTimeString[i] + '입니다.',
-								color=0xff0000
-								)
-							await client.send_message(client.get_channel(channel), embed=embed, tts=False)
-							await dbSave()
+						if basicSetting[2] != '0':
+							if bossData[i][2] == '0':
+								await client.send_message(client.get_channel(channel), bossData[i][0] + ' 미입력 됐습니다.', tts=False)
+								await PlaySound(voice_client1, './sound/' + bossData[i][0] + '미입력.mp3')
+								bossFlag[i] = False
+								bossFlag0[i] = False
+								bossMungFlag[i] = False
+								bossMungCnt[i] = bossMungCnt[i] + 1
+								tmp_bossTime[i] = bossTime[i] = nextTime = now+datetime.timedelta(hours=int(bossData[i][1]), minutes=int(0-int(basicSetting[2])+int(bossData[i][5])))
+								tmp_bossTimeString[i] = bossTimeString[i] = nextTime.strftime('%H:%M:%S')
+								tmp_bossDateString[i] = bossDateString[i] = nextTime.strftime('%Y-%m-%d')
+								embed = discord.Embed(
+									description= '다음 ' + bossData[i][0] + ' ' + bossTimeString[i] + '입니다.',
+									color=0xff0000
+									)
+								await client.send_message(client.get_channel(channel), embed=embed, tts=False)
+								await dbSave()
+							else :
+								await client.send_message(client.get_channel(channel), bossData[i][0] + ' 멍 입니다.')
+								await PlaySound(voice_client1, './sound/' + bossData[i][0] + '멍.mp3')
+								bossFlag[i] = False
+								bossFlag0[i] = False
+								bossMungFlag[i] = False
+								bossMungCnt[i] = bossMungCnt[i] + 1
+								tmp_bossTime[i] = bossTime[i] = nextTime = now+datetime.timedelta(hours=int(bossData[i][1]), minutes=int(0-int(basicSetting[2])+int(bossData[i][5])))
+								tmp_bossTimeString[i] = bossTimeString[i] = nextTime.strftime('%H:%M:%S')
+								tmp_bossDateString[i] = bossDateString[i] = nextTime.strftime('%Y-%m-%d')
+								embed = discord.Embed(
+									description= '다음 ' + bossData[i][0] + ' ' + bossTimeString[i] + '입니다.',
+									color=0xff0000
+									)
+								await client.send_message(client.get_channel(channel), embed=embed, tts=False)
+								await dbSave()
 											
 		await asyncio.sleep(1) # task runs every 60 seconds
 		
@@ -326,9 +353,7 @@ async def dbSave():
 	
 	contents = repo.get_contents("my_bot.db")
 	repo.update_file(contents.path, "bossDB", information1, contents.sha)
-	#file = open("my_bot.db", 'w')
-	#file.write(information1)
-	#file.close()
+
 
 async def dbLoad():
 	global LoadChk
@@ -336,7 +361,7 @@ async def dbLoad():
 	contents1 = repo.get_contents("my_bot.db")
 	file_data = base64.b64decode(contents1.content)
 	file_data = file_data.decode('utf-8')
-	print (file_data)
+	#print (file_data)
 	beforeBossData = file_data.split('\n')
 	
 	if len(beforeBossData) > 1:	
@@ -344,7 +369,7 @@ async def dbLoad():
 			for j in range(bossNum):
 				if beforeBossData[i+1].find(bossData[j][0]) != -1 :
 					#bossMungCnt[j] = 0
-					print (str(i) + '   '  + beforeBossData[i+1] + '     ' + bossData[j][0])
+					#print (str(i) + '   '  + beforeBossData[i+1] + '     ' + bossData[j][0])
 					tmp_len = beforeBossData[i+1].find(':')
 					tmp_datelen = beforeBossData[i+1].find('@')
 
@@ -357,9 +382,9 @@ async def dbLoad():
 					minutes1 = beforeBossData[i+1][tmp_len+5:tmp_len+7]
 					seconds1 = beforeBossData[i+1][tmp_len+8:tmp_len+10]
 					
-					now2 = datetime.datetime.now() + datetime.timedelta(hours = 9)
+					now2 = datetime.datetime.now() + datetime.timedelta(hours = int(basicSetting[0]))
 
-					tmp_now = datetime.datetime.now() + datetime.timedelta(hours = 9)
+					tmp_now = datetime.datetime.now() + datetime.timedelta(hours = int(basicSetting[0]))
 					tmp_now = tmp_now.replace(year = int(years1), month = int(months1), day = int(days1), hour=int(hours1), minute=int(minutes1), second = int(seconds1))
 
 					if tmp_now < now2 : 
@@ -373,11 +398,11 @@ async def dbLoad():
 					bossTimeString[j] = bossTime[j].strftime('%H:%M:%S')
 					bossDateString[j] = bossTime[j].strftime('%Y-%m-%d')
 					
-					print (bossData[j][0] + '  ' + bossTimeString[j] + '  ' + bossDateString[j])
+					#print (bossData[j][0] + '  ' + bossTimeString[j] + '  ' + bossDateString[j])
 
-					print (beforeBossData[i+1])
-					print (len(beforeBossData[i+1]))
-					print (beforeBossData[i+1][len(beforeBossData[i+1])-3:len(beforeBossData[i+1])-2])
+					#print (beforeBossData[i+1])
+					#print (len(beforeBossData[i+1]))
+					#print (beforeBossData[i+1][len(beforeBossData[i+1])-3:len(beforeBossData[i+1])-2])
 					if beforeBossData[i+1][len(beforeBossData[i+1])-3:len(beforeBossData[i+1])-2] != 0 :
 						bossMungCnt[j] = int(beforeBossData[i+1][len(beforeBossData[i+1])-3:len(beforeBossData[i+1])-2])
 						#print (bossMungCnt)
@@ -414,6 +439,7 @@ async def JointheVC(VCchannel, TXchannel):
 @client.event
 async def on_ready():
 	global task1
+	global channel
 	
 	global channel_info
 	global channel_name
@@ -423,6 +449,7 @@ async def on_ready():
 	global channel_type
 	
 	global chkvoicechannel
+	global chflg
 			
 	print("Logged in as ") #화면에 봇의 아이디, 닉네임이 출력됩니다.
 	print(client.user.name)
@@ -448,6 +475,14 @@ async def on_ready():
 			channel_voice_id.append(str(channel_info[i].id))
 
 	await dbLoad()
+	
+	if basicSetting[6] != "" and basicSetting[7] != "" :
+		#print ('join channel')
+		await JointheVC(client.get_channel(basicSetting[6]), client.get_channel(basicSetting[7]))
+		await client.send_message(client.get_channel(basicSetting[7]), '< 텍스트채널 [' + client.get_channel(basicSetting[7]).name + '] 접속완료>', tts=False)
+		await client.send_message(client.get_channel(basicSetting[7]), '< 음성채널 [' + client.get_channel(basicSetting[6]).name + '] 접속완료>', tts=False)
+		channel = basicSetting[7]
+		chflg = 1
 
 	#task = client.loop.create_task(my_background_task())
 	
@@ -463,8 +498,7 @@ async def on_message(msg):
 		return None #동작하지 않고 무시합니다.
 
 	global channel
-	global nowTimeString
-
+	
 	global basicSetting
 	global bossData
 
@@ -501,14 +535,41 @@ async def on_message(msg):
 	global LoadChk
 	
 	id = msg.author.id #id라는 변수에는 메시지를 보낸사람의 ID를 담습니다.
+	channel = msg.channel.id #channel이라는 변수에는 메시지를 받은 채널의 ID를 담습니다
 	
 	if chflg == 0 :
-		channel = msg.channel.id #channel이라는 변수에는 메시지를 받은 채널의 ID를 담습니다.
-		await client.send_message(client.get_channel(channel), '< ' + client.get_channel(channel).name + ' 접속완료>', tts=False)
-		task1 = client.loop.create_task(my_background_task())
+		if basicSetting[7] == "":
+			inidata_textCH = repo.get_contents("test_setting.ini")
+			file_data_textCH = base64.b64decode(inidata_textCH.content)
+			file_data_textCH = file_data_textCH.decode('utf-8')
+			inputData_textCH = file_data_textCH.split('\n')
+			
+			for i in range(len(inputData_textCH)):
+				if inputData_textCH[i] == 'textchannel = \r':
+					inputData_textCH[i] = 'textchannel = ' + channel + '\r'
+					basicSetting[7] = channel
+					#print ('======', inputData_text[i])
+			
+			result_textCH = '\n'.join(inputData_textCH)
+			
+			#print (result_textCH)
+			
+			contents = repo.get_contents("test_setting.ini")
+			repo.update_file(contents.path, "test_setting", result_textCH, contents.sha)
+
+		await client.send_message(client.get_channel(channel), '< 텍스트채널 [' + client.get_channel(channel).name + '] 접속완료>', tts=False)
+			
+		if basicSetting[6] != "":
+			#print ('join channel')
+			await JointheVC(client.get_channel(basicSetting[6]), channel)
+			await client.send_message(client.get_channel(channel), '< 음성채널 [' + client.get_channel(basicSetting[6]).name + '] 접속완료>', tts=False)
+		else:
+			#print ('join no')
+			task1 = client.loop.create_task(my_background_task())
+
+		await client.send_message(client.get_channel(channel), '< 보탐봇 재시작 설정시간 ' + basicSetting[4] + '시 ' + basicSetting[5] + '분입니다. >', tts=False)
 		chflg = 1
-	#channel = '552122588768239646'
-	#print ('msg', msg, 'channel', client.get_channel(channel), '  ID', channel)
+		
 	if client.get_channel(channel) != msg.channel :
 		return None
 	else :
@@ -552,18 +613,18 @@ async def on_message(msg):
 						chkpos = hello.find(':')
 						hours1 = hello[chkpos-2:chkpos]
 						minutes1 = hello[chkpos+1:chkpos+3]
-						now2 = datetime.datetime.now() + datetime.timedelta(hours = 9)
-						tmp_now = datetime.datetime.now() + datetime.timedelta(hours = 9)
+						now2 = datetime.datetime.now() + datetime.timedelta(hours = int(basicSetting[0]))
+						tmp_now = datetime.datetime.now() + datetime.timedelta(hours = int(basicSetting[0]))
 						tmp_now = tmp_now.replace(hour=int(hours1), minute=int(minutes1))
 					else:
 						chkpos = len(hello)-2
 						hours1 = hello[chkpos-2:chkpos]
 						minutes1 = hello[chkpos:chkpos+2]
-						now2 = datetime.datetime.now() + datetime.timedelta(hours = 9)
-						tmp_now = datetime.datetime.now() + datetime.timedelta(hours = 9)
+						now2 = datetime.datetime.now() + datetime.timedelta(hours = int(basicSetting[0]))
+						tmp_now = datetime.datetime.now() + datetime.timedelta(hours = int(basicSetting[0]))
 						tmp_now = tmp_now.replace(hour=int(hours1), minute=int(minutes1))
 				else:
-					now2 = datetime.datetime.now() + datetime.timedelta(hours = 9)
+					now2 = datetime.datetime.now() + datetime.timedelta(hours = int(basicSetting[0]))
 					tmp_now = now2
 					
 				#await client.send_message(client.get_channel(channel), now2, tts=False)
@@ -604,7 +665,7 @@ async def on_message(msg):
 
 			if message.content.startswith(bossData[i][0] +'멍'):
 				tmp_msg = bossData[i][0] +'멍'
-				tmp_now = datetime.datetime.now() + datetime.timedelta(hours = 9)
+				tmp_now = datetime.datetime.now() + datetime.timedelta(hours = int(basicSetting[0]))
 				temptime = tmp_bossTime[i]
 				if len(hello) > len(tmp_msg) + 3 :
 					if hello.find(':') != -1 :
@@ -646,8 +707,8 @@ async def on_message(msg):
 				await dbSave()
 				
 			if message.content.startswith(bossData[i][0] +'삭제'):
-				bossTime[i] = datetime.datetime.now()+datetime.timedelta(days=365, hours = 9)
-				tmp_bossTime[i] =  datetime.datetime.now()+datetime.timedelta(days=365, hours = 9)
+				bossTime[i] = datetime.datetime.now()+datetime.timedelta(days=365, hours = int(basicSetting[0]))
+				tmp_bossTime[i] =  datetime.datetime.now()+datetime.timedelta(days=365, hours = int(basicSetting[0]))
 				bossTimeString[i] = '99:99:99'
 				bossDateString[i] = '9999-99-99'
 				tmp_bossTimeString[i] = ''
@@ -776,13 +837,51 @@ async def on_message(msg):
 
 		if message.content.startswith('!소환'):
 			voice_channel = message.author.voice.voice_channel
+			
+			if basicSetting[6] == "":
+				inidata_voiceCH = repo.get_contents("test_setting.ini")
+				file_data_voiceCH = base64.b64decode(inidata_voiceCH.content)
+				file_data_voiceCH = file_data_voiceCH.decode('utf-8')
+				inputData_voiceCH = file_data_voiceCH.split('\n')
+				
+				for i in range(len(inputData_voiceCH)):
+					if inputData_voiceCH[i] == 'voicechannel = \r':
+						inputData_voiceCH[i] = 'voicechannel = ' + voice_channel.id + '\r'
+						basicSetting[6] = voice_channel.id
+						#print ('======', inputData_text[i])
+				
+				result_voiceCH = '\n'.join(inputData_voiceCH)
+				
+				#print (result_voiceCH)
+				
+				contents = repo.get_contents("test_setting.ini")
+				repo.update_file(contents.path, "test_setting", result_voiceCH, contents.sha)
+				
+			elif basicSetting[6] != voice_channel.id:
+				inidata_voiceCH = repo.get_contents("test_setting.ini")
+				file_data_voiceCH = base64.b64decode(inidata_voiceCH.content)
+				file_data_voiceCH = file_data_voiceCH.decode('utf-8')
+				inputData_voiceCH = file_data_voiceCH.split('\n')
+				
+				for i in range(len(inputData_voiceCH)):
+					if inputData_voiceCH[i] == 'voicechannel = ' + basicSetting[6] + '\r':
+						inputData_voiceCH[i] = 'voicechannel = ' + voice_channel.id + '\r'
+						basicSetting[6] = voice_channel.id
+						#print ('======', inputData_text[i])
+				
+				result_voiceCH = '\n'.join(inputData_voiceCH)
+				
+				#print (result_voiceCH)
+				
+				contents = repo.get_contents("test_setting.ini")
+				repo.update_file(contents.path, "test_setting", result_voiceCH, contents.sha)
 
 			if task1.cancelled != False:
 				task1.cancel()
 				print ('task cancle')
 
 			await JointheVC(voice_channel, channel)
-
+			await client.send_message(client.get_channel(channel), '< 음성채널 [' + client.get_channel(voice_channel.id).name + '] 접속완료>', tts=False)
 		
 		##################################
 					
@@ -820,18 +919,18 @@ async def on_message(msg):
 						chkpos = hello.find(':')
 						hours1 = hello[chkpos-2:chkpos]
 						minutes1 = hello[chkpos+1:chkpos+3]
-						now2 = datetime.datetime.now() + datetime.timedelta(hours = 9)
-						tmp_now = datetime.datetime.now() + datetime.timedelta(hours = 9)
+						now2 = datetime.datetime.now() + datetime.timedelta(hours = int(basicSetting[0]))
+						tmp_now = datetime.datetime.now() + datetime.timedelta(hours = int(basicSetting[0]))
 						tmp_now = tmp_now.replace(hour=int(hours1), minute=int(minutes1))
 					else:
 						chkpos = len(hello)-2
 						hours1 = hello[chkpos-2:chkpos]
 						minutes1 = hello[chkpos:chkpos+2]
-						now2 = datetime.datetime.now() + datetime.timedelta(hours = 9)
-						tmp_now = datetime.datetime.now() + datetime.timedelta(hours = 9)
+						now2 = datetime.datetime.now() + datetime.timedelta(hours = int(basicSetting[0]))
+						tmp_now = datetime.datetime.now() + datetime.timedelta(hours = int(basicSetting[0]))
 						tmp_now = tmp_now.replace(hour=int(hours1), minute=int(minutes1))
 				else:
-					now2 = datetime.datetime.now() + datetime.timedelta(hours = 9)
+					now2 = datetime.datetime.now() + datetime.timedelta(hours = int(basicSetting[0]))
 					tmp_now = now2
 					
 				bossFlag[i] = False
@@ -901,7 +1000,7 @@ async def on_message(msg):
 			
 			for i in range(bossNum):
 				if sorted_datelist[0] == bossTime[i]:
-					leftTime = bossTime[i] - datetime.datetime.now() + datetime.timedelta(hours = 9)
+					leftTime = bossTime[i] - datetime.datetime.now() + datetime.timedelta(hours = int(basicSetting[0]))
 			
 					#print (leftTime)
 					#leftTimeStr = leftTime.strftime('%H:%M:%S')
@@ -985,9 +1084,7 @@ async def on_message(msg):
 		##################################
 
 		if message.content.startswith('!현재시간'):
-			now3 = datetime.datetime.now() + datetime.timedelta(hours = 9)
+			now3 = datetime.datetime.now() + datetime.timedelta(hours = int(basicSetting[0]))
 			await client.send_message(client.get_channel(channel), now3.strftime('%Y-%m-%d') + '   ' + now3.strftime('%H:%M:%S'), tts=False)
 
-
-access_token = os.environ["BOT_TOKEN"]			
 client.run(access_token)
