@@ -219,9 +219,9 @@ async def my_background_task():
 		
 
 		if channel != '':			
-			await client.send_message(client.get_channel(channel), 'now : ' + nowDateString + '   ' + nowTimeString + '  end : ' + endDateString + '   ' + endTimeString, tts=False)
+			#await client.send_message(client.get_channel(channel), 'now : ' + nowDateString + '   ' + nowTimeString + '  end : ' + endDateString + '   ' + endTimeString, tts=False)
 			if endTimeString == nowTimeString and endDateString == nowDateString:
-				await client.send_message(client.get_channel(channel), '<보탐봇 화장실 갔다올 시간! 갑자기 인사해도 !>', tts=False)
+				await client.send_message(client.get_channel(channel), '<갑자기 인사해도 놀라지마세요!>', tts=False)
 				
 				inidata_restart = repo_restart.get_contents("restart.txt")
 				file_data_restart = base64.b64decode(inidata_restart.content)
