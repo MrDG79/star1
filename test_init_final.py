@@ -1042,7 +1042,9 @@ async def on_message(msg):
 								tmp_time22 = str(tmp_time2)
 							bossTimeString[j] = tmp_time1 + tmp_time22
 							
-			datelist = bossTime
+			datelist2 = bossTime
+	
+			datelist = set(datelist2)
 			
 			#print ('datelist', len(datelist))
 			#print ('bosslist', len(bossTime))
