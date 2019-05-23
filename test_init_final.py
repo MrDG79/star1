@@ -341,7 +341,7 @@ async def dbSave():
 					
 	datelist1 = bossTime
 	
-	datelist = set(datelist1)
+	datelist = list(set(datelist1))
 
 	information1 = '----- 보스탐 정보 -----\n'
 	for timestring in sorted(datelist):
@@ -1044,7 +1044,7 @@ async def on_message(msg):
 							
 			datelist2 = bossTime
 	
-			datelist = set(datelist2)
+			datelist = list(set(datelist2))
 			
 			#print ('datelist', len(datelist))
 			#print ('bosslist', len(bossTime))
