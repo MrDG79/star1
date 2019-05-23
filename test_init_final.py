@@ -160,9 +160,9 @@ def init():
 
 init()
 
-#token = basicSetting[0]
+endTime = datetime.datetime.now()
+endTime = endTime.replace(hour=int(basicSetting[4]), minute=int(basicSetting[5]), second = int(0))
 
-#channel = basicSetting[3]
 channel = ''
 
 async def my_background_task():
@@ -214,11 +214,15 @@ async def my_background_task():
 		priv = now+datetime.timedelta(minutes=int(basicSetting[1]))
 		aftr = now+datetime.timedelta(minutes=int(0-int(basicSetting[2])))
 		
-		endTimeString = endTime.strftime('%H:%M:%S')
 		nowTimeString = now.strftime('%H:%M:%S')
+		nowDateString = now.strftime('%Y-%m-%d')
+		endTimeString = endTime.strftime('%H:%M:%S')
+		endDateString = endTime.strftime('%Y-%m-%d')
+		
+		await client.send_message(client.get_channel(channel), 'now : ' + nowDateString + '   ' + nowTimeString + 'end : ' + endDateString + '   ' + endTimeString, tts=False)
 
 		if channel != '':
-			if endTimeString == nowTimeString:
+			if endTimeString == nowTimeString and endDateString == nowDateString:
 				await client.send_message(client.get_channel(channel), '<보탐봇 화장실 갔다올 시간! 접속완료 후 명령어 입력 해주세요!>', tts=False)
 				
 				inidata_restart = repo_restart.get_contents("restart.txt")
