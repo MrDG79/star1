@@ -211,7 +211,7 @@ async def my_background_task():
 		
 		if endTime < now:
 			endTime = endTime + datetime.timedelta(days = 1)
-			await client.send_message(client.get_channel(channel), 'now : ' + nowDateString + '   ' + nowTimeString + '  end : ' + endDateString + '   ' + endTimeString, tts=False)
+			#
 		
 		nowTimeString = now.strftime('%H:%M:%S')
 		nowDateString = now.strftime('%Y-%m-%d')
@@ -220,8 +220,9 @@ async def my_background_task():
 		
 
 		if channel != '':			
+			await client.send_message(client.get_channel(channel), 'now : ' + nowDateString + '   ' + nowTimeString + '  end : ' + endDateString + '   ' + endTimeString, tts=False)
 			if endTimeString == nowTimeString and endDateString == nowDateString:
-				await client.send_message(client.get_channel(channel), '<보탐봇 화장실 갔다올 시간! 접속완료 후 명령어 입력 해주세요!>', tts=False)
+				await client.send_message(client.get_channel(channel), '<보탐봇 화장실 갔다올 시간! 갑자기 인사해도 !>', tts=False)
 				
 				inidata_restart = repo_restart.get_contents("restart.txt")
 				file_data_restart = base64.b64decode(inidata_restart.content)
@@ -234,6 +235,8 @@ async def my_background_task():
 				else:
 					contents12 = repo_restart.get_contents("restart.txt")
 					repo_restart.update_file(contents12.path, "restart_1", "", contents12.sha)
+					
+				endTime = endTime + datetime.timedelta(days = 1)
 
 			for i in range(bossNum):
 				#print (bossData[i][0], bossTime[i])
