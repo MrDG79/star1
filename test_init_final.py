@@ -477,6 +477,7 @@ async def on_ready():
 		await JointheVC(client.get_channel(basicSetting[6]), client.get_channel(basicSetting[7]))
 		await client.send_message(client.get_channel(basicSetting[7]), '< 텍스트채널 [' + client.get_channel(basicSetting[7]).name + '] 접속완료>', tts=False)
 		await client.send_message(client.get_channel(basicSetting[7]), '< 음성채널 [' + client.get_channel(basicSetting[6]).name + '] 접속완료>', tts=False)
+		await client.send_message(client.get_channel(channel), '< 보탐봇 재시작 설정시간 ' + basicSetting[4] + '시 ' + basicSetting[5] + '분입니다. >', tts=False)
 		channel = basicSetting[7]
 		chflg = 1
 
