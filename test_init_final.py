@@ -216,6 +216,9 @@ async def my_background_task():
 		nowDateString = now.strftime('%Y-%m-%d')
 		endTimeString = endTime.strftime('%H:%M:%S')
 		endDateString = endTime.strftime('%Y-%m-%d')
+		
+		if endTime < now:
+			endtime = endTime + datetime.timedelta(days = 1)
 	
 		if channel != '':
 			await client.send_message(client.get_channel(channel), 'now : ' + nowDateString + '   ' + nowTimeString + 'end : ' + endDateString + '   ' + endTimeString, tts=False)
