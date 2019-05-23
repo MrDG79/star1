@@ -161,7 +161,7 @@ def init():
 init()
 
 endTime = datetime.datetime.now()
-endTime = endTime.replace(hour=int(basicSetting[4]), minute=int(basicSetting[5]), second = int(0)) + datetime.timedelta(hours = int(basicSetting[0]))
+endTime = endTime.replace(hour=int(basicSetting[4]), minute=int(basicSetting[5]), second = int(0))
 
 channel = ''
 
