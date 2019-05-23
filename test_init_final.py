@@ -161,7 +161,7 @@ def init():
 init()
 
 endTime = datetime.datetime.now()
-endTime = endTime.replace(hour=int(basicSetting[4]), minute=int(basicSetting[5]), second = int(0))
+endTime = endTime.replace(hour=int(basicSetting[4]), minute=int(basicSetting[5]), second = int(0)) + datetime.timedelta(hours = int(basicSetting[0]))
 
 channel = ''
 
@@ -203,12 +203,10 @@ async def my_background_task():
 	global channel_type
 
 	while not client.is_closed:
-		endTime = datetime.datetime.now()
 		'''
 		endTime = endTime.replace(hour=int(basicSetting[4]), minute=int(basicSetting[5]), second = int(0))
 		now = datetime.datetime.now()
 		'''
-		endTime = endTime.replace(hour=int(basicSetting[4]), minute=int(basicSetting[5]), second = int(0)) + datetime.timedelta(hours = int(basicSetting[0]))
 		now = datetime.datetime.now() + datetime.timedelta(hours = int(basicSetting[0]))
 		priv0 = now+datetime.timedelta(minutes=int(basicSetting[3]))
 		priv = now+datetime.timedelta(minutes=int(basicSetting[1]))
