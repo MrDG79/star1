@@ -214,8 +214,11 @@ async def my_background_task():
 		priv = now+datetime.timedelta(minutes=int(basicSetting[1]))
 		aftr = now+datetime.timedelta(minutes=int(0-int(basicSetting[2])))
 		
+		endTimeString = endTime.strftime('%H:%M:%S')
+		nowTimeString = now.strftime('%H:%M:%S')
+
 		if channel != '':
-			if endTime == now:
+			if endTimeString == nowTimeString:
 				await client.send_message(client.get_channel(channel), '<보탐봇 화장실 갔다올 시간! 접속완료 후 명령어 입력 해주세요!>', tts=False)
 				
 				inidata_restart = repo_restart.get_contents("restart.txt")
