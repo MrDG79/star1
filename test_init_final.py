@@ -218,10 +218,10 @@ async def my_background_task():
 		nowDateString = now.strftime('%Y-%m-%d')
 		endTimeString = endTime.strftime('%H:%M:%S')
 		endDateString = endTime.strftime('%Y-%m-%d')
-		
-		await client.send_message(client.get_channel(channel), 'now : ' + nowDateString + '   ' + nowTimeString + 'end : ' + endDateString + '   ' + endTimeString, tts=False)
-
+	
 		if channel != '':
+			await client.send_message(client.get_channel(channel), 'now : ' + nowDateString + '   ' + nowTimeString + 'end : ' + endDateString + '   ' + endTimeString, tts=False)
+			
 			if endTimeString == nowTimeString and endDateString == nowDateString:
 				await client.send_message(client.get_channel(channel), '<보탐봇 화장실 갔다올 시간! 접속완료 후 명령어 입력 해주세요!>', tts=False)
 				
