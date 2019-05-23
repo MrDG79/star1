@@ -162,6 +162,9 @@ init()
 
 endTime = datetime.datetime.now() + datetime.timedelta(hours = int(basicSetting[0]))
 endTime = endTime.replace(hour=int(basicSetting[4]), minute=int(basicSetting[5]), second = int(0))
+tmp_endTime = datetime.datetime.now() + datetime.timedelta(hours = int(basicSetting[0]))
+if endTime < tmp_endTime:
+	endTime = endTime + datetime.timedelta(days = 1)
 
 channel = ''
 
@@ -208,10 +211,6 @@ async def my_background_task():
 		priv0 = now+datetime.timedelta(minutes=int(basicSetting[3]))
 		priv = now+datetime.timedelta(minutes=int(basicSetting[1]))
 		aftr = now+datetime.timedelta(minutes=int(0-int(basicSetting[2])))
-		
-		if endTime < now:
-			endTime = endTime + datetime.timedelta(days = 1)
-			#
 		
 		nowTimeString = now.strftime('%H:%M:%S')
 		nowDateString = now.strftime('%Y-%m-%d')
