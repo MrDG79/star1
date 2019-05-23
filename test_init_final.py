@@ -169,6 +169,7 @@ async def my_background_task():
 	await client.wait_until_ready()
 
 	global channel
+	global endTime
 		
 	global basicSetting
 	global bossData
