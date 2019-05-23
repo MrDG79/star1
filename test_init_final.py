@@ -285,7 +285,7 @@ async def my_background_task():
 									color=0xff0000
 									)
 								await client.send_message(client.get_channel(channel), embed=embed, tts=False)
-								#await dbSave()
+								await dbSave()
 							else :
 								await client.send_message(client.get_channel(channel), bossData[i][0] + ' 멍 입니다.')
 								await PlaySound(voice_client1, './sound/' + bossData[i][0] + '멍.mp3')
@@ -301,7 +301,7 @@ async def my_background_task():
 									color=0xff0000
 									)
 								await client.send_message(client.get_channel(channel), embed=embed, tts=False)
-								#await dbSave()
+								await dbSave()
 											
 		await asyncio.sleep(1) # task runs every 60 seconds
 		
@@ -1026,7 +1026,9 @@ async def on_message(msg):
 		##################################
 
 		if message.content.startswith('보스탐'):
-
+			await dbSave()
+			await dbLoad()
+			
 			for i in range(bossNum):
 				for j in range(bossNum):
 					if bossTimeString[i] and bossTimeString[j] != '99:99:99':
