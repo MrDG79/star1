@@ -538,9 +538,9 @@ async def on_message(msg):
 	global LoadChk
 	
 	id = msg.author.id #id라는 변수에는 메시지를 보낸사람의 ID를 담습니다.
-	channel = msg.channel.id #channel이라는 변수에는 메시지를 받은 채널의 ID를 담습니다
 	
 	if chflg == 0 :
+		channel = msg.channel.id #channel이라는 변수에는 메시지를 받은 채널의 ID를 담습니다
 		if basicSetting[7] == "":
 			inidata_textCH = repo.get_contents("test_setting.ini")
 			file_data_textCH = base64.b64decode(inidata_textCH.content)
