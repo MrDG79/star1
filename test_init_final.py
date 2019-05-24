@@ -1049,7 +1049,7 @@ async def on_message(msg):
 			
 			for i in range(bossNum):
 				if sorted_datelist[0] == bossTime[i]:
-					leftTime = bossTime[i] - datetime.datetime.now() + datetime.timedelta(hours = int(basicSetting[0]))
+					leftTime = bossTime[i] - datetime.datetime.now() - datetime.timedelta(hours = int(basicSetting[0]))
 			
 					#print (leftTime)
 					#leftTimeStr = leftTime.strftime('%H:%M:%S')
