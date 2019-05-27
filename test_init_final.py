@@ -843,44 +843,19 @@ async def on_message(msg):
 		##################################
 
 		if message.content.startswith('!명치'):
-			if chkvoicechannel == 1:
-				chkvoicechannel = 0
-				await voice_client1.disconnect()
-			
-			basicSetting = []
-			bossData = []
-			bossTime = []
-			tmp_bossTime = []
-			bossTimeString = []
-			bossDateString = []
-			tmp_bossTimeString = []
-			tmp_bossDateString = []
-			bossFlag = []
-			bossFlag0 = []
-			bossMungFlag = []
-			bossMungCnt = []
+			await client.send_message(client.get_channel(channel), '<명치 맞고 숨고르는 중... 갑자기 인사해도 놀라지마세요!>', tts=False)
 
-			init()
-			
-			if task1.cancelled != False:
-				task1.cancel()
-				print ('task cancle')
-			
-			await client.send_message(client.get_channel(channel), '<재접속 성공>', tts=False)
-			print ("<재접속 성공>")
+			inidata_restart = repo_restart.get_contents("restart.txt")
+			file_data_restart = base64.b64decode(inidata_restart.content)
+			file_data_restart = file_data_restart.decode('utf-8')
+			inputData_restart = file_data_restart.split('\n')
 
-			await dbLoad()
-
-			if LoadChk == 0:
-				await client.send_message(client.get_channel(channel), '<불러오기 완료>', tts=False)
+			if len(inputData_restart) < 3:	
+				contents12 = repo_restart.get_contents("restart.txt")
+				repo_restart.update_file(contents12.path, "restart_0", "restart\nrestart\nrestrat\n", contents12.sha)
 			else:
-				await client.send_message(client.get_channel(channel), '<보스타임 정보가 없습니다.>', tts=False)
-			
-			await dbSave()
-
-			voice_channel = message.author.voice.voice_channel
-
-			await JointheVC(voice_channel, channel)
+				contents12 = repo_restart.get_contents("restart.txt")
+				repo_restart.update_file(contents12.path, "restart_1", "", contents12.sha)
 			
 		#############################
 
