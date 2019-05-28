@@ -340,7 +340,7 @@ async def dbSave():
 						tmp_time22 = str(tmp_time2)
 					bossTimeString[j] = tmp_time1 + tmp_time22
 					
-	datelist1 = bossTime
+	datelist1 = tmp_bossTime
 	
 	datelist = list(set(datelist1))
 
