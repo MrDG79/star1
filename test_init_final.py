@@ -352,9 +352,9 @@ async def dbSave():
 			if timestring == tmp_bossTime[i]:
 				if tmp_bossTimeString[i] != '99:99:99' :
 					if bossData[i][2] == '0' :
-						information1 += ' - ' + bossData[i][0] + '(' + bossData[i][1] + '.' + bossData[i][5] + ') : ' + bossTimeString[i] + ' @ ' + bossDateString[i] + ' (미입력 ' + str(bossMungCnt[i]) + '회)' + '\n'
+						information1 += ' - ' + bossData[i][0] + '(' + bossData[i][1] + '.' + bossData[i][5] + ') : ' + tmp_bossTimeString[i] + ' @ ' + tmp_bossDateString[i] + ' (미입력 ' + str(bossMungCnt[i]) + '회)' + '\n'
 					else : 
-						information1 += ' - ' + bossData[i][0] + '(' + bossData[i][1] + '.' + bossData[i][5] + ') : ' + bossTimeString[i] + ' @ ' + bossDateString[i] + ' (멍 ' + str(bossMungCnt[i]) + '회)' + '\n'
+						information1 += ' - ' + bossData[i][0] + '(' + bossData[i][1] + '.' + bossData[i][5] + ') : ' + tmp_bossTimeString[i] + ' @ ' + tmp_bossDateString[i] + ' (멍 ' + str(bossMungCnt[i]) + '회)' + '\n'
 
 	contents = repo.get_contents("my_bot.db")
 	repo.update_file(contents.path, "bossDB", information1, contents.sha)
