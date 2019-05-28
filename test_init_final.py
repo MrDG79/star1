@@ -373,7 +373,7 @@ async def dbLoad():
 		for i in range(len(beforeBossData)-1):
 			for j in range(bossNum):
 				if beforeBossData[i+1].find(bossData[j][0]) != -1 :
-					#bossMungCnt[j] = 0
+					tmp_mungcnt = 0
 					#print (str(i) + '   '  + beforeBossData[i+1] + '     ' + bossData[j][0])
 					tmp_len = beforeBossData[i+1].find(':')
 					tmp_datelen = beforeBossData[i+1].find('@')
@@ -396,6 +396,7 @@ async def dbLoad():
 						deltaTime = datetime.timedelta(hours = int(bossData[j][1]), minutes = int(bossData[j][5]))
 						while now2 > tmp_now :
 							tmp_now = tmp_now + deltaTime
+							tmp_mungcnt = tmp_mungcnt + 1
 					
 					now2 = tmp_now
 
@@ -409,7 +410,7 @@ async def dbLoad():
 					#print (len(beforeBossData[i+1]))
 					#print (beforeBossData[i+1][len(beforeBossData[i+1])-3:len(beforeBossData[i+1])-2])
 					if beforeBossData[i+1][len(beforeBossData[i+1])-3:len(beforeBossData[i+1])-2] != 0 :
-						bossMungCnt[j] = int(beforeBossData[i+1][len(beforeBossData[i+1])-3:len(beforeBossData[i+1])-2])
+						bossMungCnt[j] = int(beforeBossData[i+1][len(beforeBossData[i+1])-3:len(beforeBossData[i+1])-2]) + tmp_mungcnt
 						#print (bossMungCnt)
 					else:
 						bossMungCnt[j] = 0
