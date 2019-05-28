@@ -400,8 +400,8 @@ async def dbLoad():
 					now2 = tmp_now
 
 					tmp_bossTime[j] = bossTime[j] = now2
-					bossTimeString[j] = bossTime[j].strftime('%H:%M:%S')
-					bossDateString[j] = bossTime[j].strftime('%Y-%m-%d')
+					tmp_bossTimeString[j] = bossTimeString[j] = bossTime[j].strftime('%H:%M:%S')
+					tmp_bossDateString[j] = bossDateString[j] = bossTime[j].strftime('%Y-%m-%d')
 					
 					#print (bossData[j][0] + '  ' + bossTimeString[j] + '  ' + bossDateString[j])
 
