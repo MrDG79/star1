@@ -221,6 +221,7 @@ async def my_background_task():
 		if channel != '':			
 			#await client.send_message(client.get_channel(channel), 'now : ' + nowDateString + '   ' + nowTimeString + '  end : ' + endDateString + '   ' + endTimeString, tts=False)
 			if endTimeString == nowTimeString and endDateString == nowDateString:
+				await dbSave()
 				await client.send_message(client.get_channel(channel), '<갑자기 인사해도 놀라지마세요!>', tts=False)
 				
 				inidata_restart = repo_restart.get_contents("restart.txt")
