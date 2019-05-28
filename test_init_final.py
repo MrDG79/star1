@@ -844,6 +844,7 @@ async def on_message(msg):
 		##################################
 
 		if message.content.startswith('!명치'):
+			await dbSave()
 			await client.send_message(client.get_channel(channel), '<명치 맞고 숨고르는 중... 갑자기 인사해도 놀라지마세요!>', tts=False)
 
 			inidata_restart = repo_restart.get_contents("restart.txt")
