@@ -223,6 +223,7 @@ async def my_background_task():
 			if endTimeString == nowTimeString and endDateString == nowDateString:
 				await dbSave()
 				await client.send_message(client.get_channel(channel), '<갑자기 인사해도 놀라지마세요!>', tts=False)
+				await asyncio.sleep(2)
 				
 				inidata_restart = repo_restart.get_contents("restart.txt")
 				file_data_restart = base64.b64decode(inidata_restart.content)
@@ -843,6 +844,7 @@ async def on_message(msg):
 		if message.content.startswith('!명치'):
 			await dbSave()
 			await client.send_message(client.get_channel(channel), '<명치 맞고 숨고르는 중... 갑자기 인사해도 놀라지마세요!>', tts=False)
+			await asyncio.sleep(2)
 
 			inidata_restart = repo_restart.get_contents("restart.txt")
 			file_data_restart = base64.b64decode(inidata_restart.content)
