@@ -410,8 +410,10 @@ async def dbLoad():
 					#print (beforeBossData[i+1])
 					#print (len(beforeBossData[i+1]))
 					#print (beforeBossData[i+1][len(beforeBossData[i+1])-3:len(beforeBossData[i+1])-2])
-					if beforeBossData[i+1][len(beforeBossData[i+1])-3:len(beforeBossData[i+1])-2] != 0 :
+					if beforeBossData[i+1][len(beforeBossData[i+1])-3:len(beforeBossData[i+1])-2] != 0 and beforeBossData[i+1][len(beforeBossData[i+1])-4:len(beforeBossData[i+1])-3] == ' ':
 						bossMungCnt[j] = int(beforeBossData[i+1][len(beforeBossData[i+1])-3:len(beforeBossData[i+1])-2]) + tmp_mungcnt
+					elif beforeBossData[i+1][len(beforeBossData[i+1])-4:len(beforeBossData[i+1])-3] != ' ':
+						bossMungCnt[j] = int(beforeBossData[i+1][len(beforeBossData[i+1])-4:len(beforeBossData[i+1])-3] + beforeBossData[i+1][len(beforeBossData[i+1])-3:len(beforeBossData[i+1])-2]) + tmp_mungcnt
 						#print (bossMungCnt)
 					else:
 						bossMungCnt[j] = 0
