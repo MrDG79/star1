@@ -673,6 +673,11 @@ async def on_message(msg):
 			if message.content.startswith(bossData[i][0] +'멍'):
 				tmp_msg = bossData[i][0] +'멍'
 				tmp_now = datetime.datetime.now() + datetime.timedelta(hours = int(basicSetting[0]))
+				if tmp_bossTime[i] != bossTime[i]:
+					bossMungCnt[i] = bossMungCnt[i] + 1
+				else :
+					bossMungCnt[i] = bossMungCnt[i]
+				
 				temptime = tmp_bossTime[i]
 				if len(hello) > len(tmp_msg) + 3 :
 					if hello.find(':') != -1 :
