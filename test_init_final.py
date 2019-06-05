@@ -826,13 +826,17 @@ async def on_message(msg):
 
 		if message.content.startswith('!미예약'):
 			temp_bossTime2 = []
+			temp_bossTimeSTR = ''
 			for i in range(bossNum):
 				if bossTimeString[i] == '99:99:99' :
 					temp_bossTime2.append(bossData[i][0])
 					
+			for i in range(len(temp_bossTime2))
+				temp_bossTimeSTR += temp_bossTime2[i]
+					
 			embed = discord.Embed(
 					title = "----- 미예약보스 -----",
-					description= str(temp_bossTime2),
+					description= temp_bossTimeSTR,
 					color=0x0000ff
 					)
 			await client.send_message(client.get_channel(channel), embed=embed, tts=False)
