@@ -245,14 +245,14 @@ async def my_background_task():
 					if basicSetting[3] != '0':
 						if bossFlag0[i] == False:
 							bossFlag0[i] = True
-							await client.send_message(client.get_channel(channel), bossData[i][0] + ' ' + basicSetting[3] + '분 전 ' + bossData[i][3], tts=False)
+							await client.send_message(client.get_channel(channel), "```" + bossData[i][0] + ' ' + basicSetting[3] + '분 전 ' + bossData[i][3] + "```", tts=False)
 							await PlaySound(voice_client1, './sound/' + bossData[i][0] + '알림1.mp3')
 				
 				if bossTime[i] <= priv and bossTime[i] > now:
 					if basicSetting[1] != '0' :
 						if bossFlag[i] == False:
 							bossFlag[i] = True
-							await client.send_message(client.get_channel(channel), bossData[i][0] + ' ' + basicSetting[1] + '분 전 ' + bossData[i][3], tts=False)
+							await client.send_message(client.get_channel(channel), "```" + bossData[i][0] + ' ' + basicSetting[1] + '분 전 ' + bossData[i][3] + "```", tts=False)
 							await PlaySound(voice_client1, './sound/' + bossData[i][0] + '알림.mp3')
 						
 				if bossTime[i] <= now :
@@ -275,7 +275,7 @@ async def my_background_task():
 					if (bossTime[i]+datetime.timedelta(days=-365)) <= aftr:
 						if basicSetting[2] != '0':
 							if bossData[i][2] == '0':
-								await client.send_message(client.get_channel(channel), bossData[i][0] + ' 미입력 됐습니다.', tts=False)
+								await client.send_message(client.get_channel(channel),"```" +  bossData[i][0] + ' 미입력 됐습니다.```', tts=False)
 								await PlaySound(voice_client1, './sound/' + bossData[i][0] + '미입력.mp3')
 								bossFlag[i] = False
 								bossFlag0[i] = False
@@ -291,7 +291,7 @@ async def my_background_task():
 								await client.send_message(client.get_channel(channel), embed=embed, tts=False)
 								await dbSave()
 							else :
-								await client.send_message(client.get_channel(channel), bossData[i][0] + ' 멍 입니다.')
+								await client.send_message(client.get_channel(channel), "```" + bossData[i][0] + ' 멍 입니다.```')
 								await PlaySound(voice_client1, './sound/' + bossData[i][0] + '멍.mp3')
 								bossFlag[i] = False
 								bossFlag0[i] = False
@@ -1103,12 +1103,12 @@ async def on_message(msg):
 
 			embed = discord.Embed(
 					title = "----- 보스탐 정보 -----",
-					description= information,
+					description= "```" + information + "```",
 					color=0x0000ff
 					)
 			embed.add_field(
 					name="----- 미예약보스 -----",
-					value=str(temp_bossTime1)
+					value= "```" + str(temp_bossTime1) + "```"
 					)
 			await client.send_message(client.get_channel(channel), embed=embed, tts=False)
 
