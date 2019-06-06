@@ -799,10 +799,10 @@ async def on_message(msg):
 			del(ladder[0])
 			if num_cong < len(ladder):
 				result_ladder = random.sample(ladder, num_cong)
-				print (result_ladder)
+				result_ladderSTR = ','.join(map(str, result_ladder))
 				embed = discord.Embed(
 					title = "----- 당첨! -----",
-					description= '```' + str(result_ladder)+ '```',
+					description= '```' + result_ladderSTR + '```',
 					color=0xff00ff
 					)
 				await client.send_message(client.get_channel(channel), embed=embed, tts=False)
