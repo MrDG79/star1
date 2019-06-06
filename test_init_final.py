@@ -831,7 +831,7 @@ async def on_message(msg):
 				if bossTimeString[i] == '99:99:99' :
 					temp_bossTime2.append(bossData[i][0])
 			
-                        temp_bossTimeSTR = ', '.join(map(str, temp_bossTime2)) 		
+			temp_bossTimeSTR = ', '.join(map(str, temp_bossTime2)) 		
 			#for i in range(len(temp_bossTime2) - 1):
 			#	temp_bossTimeSTR += temp_bossTime2[i] +', '
 					
