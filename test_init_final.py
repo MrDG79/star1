@@ -830,9 +830,10 @@ async def on_message(msg):
 			for i in range(bossNum):
 				if bossTimeString[i] == '99:99:99' :
 					temp_bossTime2.append(bossData[i][0])
-					
-			for i in range(len(temp_bossTime2) - 1):
-				temp_bossTimeSTR += temp_bossTime2[i] +', '
+			
+                        temp_bossTimeSTR = ', '.join(map(str, temp_bossTime2)) 		
+			#for i in range(len(temp_bossTime2) - 1):
+			#	temp_bossTimeSTR += temp_bossTime2[i] +', '
 					
 			embed = discord.Embed(
 					title = "----- 미예약보스 -----",
