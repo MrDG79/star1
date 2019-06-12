@@ -790,7 +790,7 @@ async def on_message(msg):
 			num_sep = int(separate_money[0])
 			cal_tax1 = math.ceil(float(separate_money[1])*0.05)
 			real_money = int(int(separate_money[1]) - cal_tax1)
-			cal_tax2 = int(real_money/num_sep) - int(float(int(real_money/num_sep))*0.95)
+			cal_tax2 = int(real_money/num_sep) - math.ceil(float(int(real_money/num_sep))*0.95)
 			if num_sep == 0 :
 				await client.send_message(client.get_channel(channel), '```분배 인원이 0입니다. 재입력 해주세요.```', tts=False)
 			else :
