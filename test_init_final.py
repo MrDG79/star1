@@ -409,10 +409,10 @@ async def dbLoad():
 					
 					bossData[j][6] = beforeBossData[i+1][tmp_msglen+2:len(beforeBossData[i+1])-1]
 					
-					if beforeBossData[i+1][tmp_msglen-3:tmp_msglen-2] != 0 and beforeBossData[i+1][tmp_msglen-4:tmp_msglen-3] == ' ':
-						bossMungCnt[j] = int(beforeBossData[i+1][tmp_msglen-3:tmp_msglen-2]) + tmp_mungcnt
-					elif beforeBossData[i+1][tmp_msglen-4:tmp_msglen-3] != ' ':
-						bossMungCnt[j] = int(beforeBossData[i+1][tmp_msglen-4:tmp_msglen-3] + beforeBossData[i+1][tmp_msglen-3:tmp_msglen-2]) + tmp_mungcnt
+					if beforeBossData[i+1][tmp_msglen-4:tmp_msglen-3] != 0 and beforeBossData[i+1][tmp_msglen-5:tmp_msglen-4] == ' ':
+						bossMungCnt[j] = int(beforeBossData[i+1][tmp_msglen-4:tmp_msglen-3]) + tmp_mungcnt
+					elif beforeBossData[i+1][tmp_msglen-5:tmp_msglen-4] != ' ':
+						bossMungCnt[j] = int(beforeBossData[i+1][tmp_msglen-5:tmp_msglen-4] + beforeBossData[i+1][tmp_msglen-4:tmp_msglen-3]) + tmp_mungcnt
 					else:
 						bossMungCnt[j] = 0
 		LoadChk = 0
