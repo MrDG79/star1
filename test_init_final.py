@@ -17,6 +17,7 @@ if not discord.opus.is_loaded():
 
 basicSetting = []
 bossData = []
+fixed_bossData = []
 
 bossNum = 0
 fixed_bossNum = 0
@@ -49,6 +50,12 @@ channel_type = []
 
 
 client = discord.Client()
+'''
+access_token = 'NTAzOTA5NDIyMzg5NTI2NTI5.Dq9WAA.3Z3HAgSvYi6I3tg56Eg8TQzcJu8'
+git_access_token = '0f08d5b3ca4bc3a32ef20413457655a5c6ea17ee'
+git_access_repo = 'chochul12/bossbotDB'		
+git_access_repo_restart = 'chochul12/bossbot'
+'''
 
 access_token = os.environ["BOT_TOKEN"]			
 git_access_token = os.environ["GIT_TOKEN"]			
@@ -70,8 +77,9 @@ def init():
 	global chkrelogin
 
 	global bossTime
-	global fixed_bossTime
 	global tmp_bossTime
+
+	global fixed_bossTime
 
 	global bossTimeString
 	global bossDateString
@@ -204,7 +212,6 @@ def init():
 		if fixed_bossTime[i] < tmp_fixed_now :
 			fixed_bossTime[i] = fixed_bossTime[i] + datetime.timedelta(days=int(1))
 		
-		
 	#inidata.close()
 
 init()
@@ -225,6 +232,7 @@ async def my_background_task():
 		
 	global basicSetting
 	global bossData
+	global fixed_bossData
 
 	global bossNum
 	global fixed_bossNum
@@ -232,8 +240,9 @@ async def my_background_task():
 	global chkrelogin
 
 	global bossTime
-	global fixed_bossTime
 	global tmp_bossTime
+	
+	global fixed_bossTime
 
 	global bossTimeString
 	global bossDateString
@@ -289,17 +298,19 @@ async def my_background_task():
 					repo_restart.update_file(contents12.path, "restart_1", "", contents12.sha)
 					
 				endTime = endTime + datetime.timedelta(days = 1)
+				
 			
 			for i in range(fixed_bossNum):
 				if fixed_bossTime[i] <= now :
 					fixed_bossTime[i] = now+datetime.timedelta(days=int(1))
 					embed = discord.Embed(
-							description= "```" + fixed_bossData[i][0] + '탐 ' + fixed_bossData[i][4] + "```" ,
+							description= fixed_bossData[i][0] + '탐 ' + fixed_bossData[i][4],
 							color=0x00ff00
 							)
 					await client.send_message(client.get_channel(channel), embed=embed, tts=False)
 					await PlaySound(voice_client1, './sound/' + fixed_bossData[i][0] + '젠.mp3')
 
+				
 			for i in range(bossNum):
 				#print (bossData[i][0], bossTime[i])
 				if bossTime[i] <= priv0 and bossTime[i] > priv:
@@ -327,6 +338,7 @@ async def my_background_task():
 					bossTime[i] = now+datetime.timedelta(days=365)
 					embed = discord.Embed(
 							description= "```" + bossData[i][0] + '탐 ' + bossData[i][4] + "```" ,
+
 							color=0x00ff00
 							)
 					await client.send_message(client.get_channel(channel), embed=embed, tts=False)
@@ -467,7 +479,7 @@ async def dbLoad():
 					tmp_bossDateString[j] = bossDateString[j] = bossTime[j].strftime('%Y-%m-%d')
 					
 					bossData[j][6] = beforeBossData[i+1][tmp_msglen+2:len(beforeBossData[i+1])]
-					
+
 					if beforeBossData[i+1][tmp_msglen-4:tmp_msglen-3] != 0 and beforeBossData[i+1][tmp_msglen-5:tmp_msglen-4] == ' ':
 						bossMungCnt[j] = int(beforeBossData[i+1][tmp_msglen-4:tmp_msglen-3]) + tmp_mungcnt
 					elif beforeBossData[i+1][tmp_msglen-5:tmp_msglen-4] != ' ':
@@ -568,6 +580,7 @@ async def on_message(msg):
 	
 	global basicSetting
 	global bossData
+	global fixed_bossData
 
 	global bossNum
 	global chkvoicechannel
@@ -1012,7 +1025,7 @@ async def on_message(msg):
 
 			bossTime = []
 			tmp_bossTime = []
-			
+
 			fixed_bossTime = []
 
 			bossTimeString = []
