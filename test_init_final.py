@@ -582,11 +582,14 @@ async def on_message(msg):
 	global fixed_bossData
 
 	global bossNum
+	global fixed_bossNum
 	global chkvoicechannel
 	global chkrelogin
 
 	global bossTime
 	global tmp_bossTime
+
+	global fixed_bossTime
 
 	global bossTimeString
 	global bossDateString
@@ -1181,6 +1184,13 @@ async def on_message(msg):
 			#print ('datelist', len(datelist))
 			#print ('bosslist', len(bossTime))
 			#print ('bossdata', len(bossData))
+			
+			fixed_information = ''
+			for i in range(fixed_bossNum):
+					tmp_timeSTR = fixed_bossTime[i].strftime('%H:%M:%S')
+					fixed_information += fixed_bossData[i][0] + ' : ' + tmp_timeSTR + '\n'
+
+			fixed_information = '```' + fixed_information + '```'
 
 			temp_bossTime1 = []
 			for i in range(bossNum):
@@ -1221,8 +1231,12 @@ async def on_message(msg):
 					color=0x0000ff
 					)
 			embed.add_field(
-					name="----- 미예약보스 -----",
+					name="----- 미예약 보스 -----",
 					value= temp_bossTimeSTR1
+					)
+			embed.add_field(
+					name="----- 고 정 보 스 -----",
+					value= fixed_information
 					)
 			await client.send_message(client.get_channel(channel), embed=embed, tts=False)
 
