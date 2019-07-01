@@ -137,6 +137,7 @@ def init():
 		f.append(tmp_bossData[j][3][20:])         #3 : 분전 알림멘트
 		f.append(tmp_bossData[j][4][13:])         #4 : 젠 알림멘트
 		f.append(tmp_bossData[j][1][tmp_len+1:])  #5 : 분
+		f.append('')                              #6 : 메세지
 		bossData.append(f)
 		f = []
 
@@ -354,10 +355,10 @@ async def dbSave():
 			if timestring == bossTime[i]:
 				if bossTimeString[i] != '99:99:99' :
 					if bossData[i][2] == '0' :
-						information1 += ' - ' + bossData[i][0] + '(' + bossData[i][1] + '.' + bossData[i][5] + ') : ' + bossTimeString[i] + ' @ ' + bossDateString[i] + ' (미입력 ' + str(bossMungCnt[i]) + '회)' + '\n'
+						information1 += ' - ' + bossData[i][0] + '(' + bossData[i][1] + '.' + bossData[i][5] + ') : ' + bossTimeString[i] + ' @ ' + bossDateString[i] + ' (미입력 ' + str(bossMungCnt[i]) + '회)' + ' * ' + bossData[i][6] + '\n'
 					else : 
-						information1 += ' - ' + bossData[i][0] + '(' + bossData[i][1] + '.' + bossData[i][5] + ') : ' + bossTimeString[i] + ' @ ' + bossDateString[i] + ' (멍 ' + str(bossMungCnt[i]) + '회)' + '\n'
-
+						information1 += ' - ' + bossData[i][0] + '(' + bossData[i][1] + '.' + bossData[i][5] + ') : ' + bossTimeString[i] + ' @ ' + bossDateString[i] + ' (멍 ' + str(bossMungCnt[i]) + '회)' + ' * ' + bossData[i][6] + '\n'
+						
 	contents = repo.get_contents("my_bot.db")
 	repo.update_file(contents.path, "bossDB", information1, contents.sha)
 
@@ -378,6 +379,7 @@ async def dbLoad():
 					tmp_mungcnt = 0
 					tmp_len = beforeBossData[i+1].find(':')
 					tmp_datelen = beforeBossData[i+1].find('@')
+					tmp_msglen = beforeBossData[i+1].find('*')
 
 					
 					years1 = beforeBossData[i+1][tmp_datelen+2:tmp_datelen+6]
@@ -405,10 +407,12 @@ async def dbLoad():
 					tmp_bossTimeString[j] = bossTimeString[j] = bossTime[j].strftime('%H:%M:%S')
 					tmp_bossDateString[j] = bossDateString[j] = bossTime[j].strftime('%Y-%m-%d')
 					
-					if beforeBossData[i+1][len(beforeBossData[i+1])-3:len(beforeBossData[i+1])-2] != 0 and beforeBossData[i+1][len(beforeBossData[i+1])-4:len(beforeBossData[i+1])-3] == ' ':
-						bossMungCnt[j] = int(beforeBossData[i+1][len(beforeBossData[i+1])-3:len(beforeBossData[i+1])-2]) + tmp_mungcnt
-					elif beforeBossData[i+1][len(beforeBossData[i+1])-4:len(beforeBossData[i+1])-3] != ' ':
-						bossMungCnt[j] = int(beforeBossData[i+1][len(beforeBossData[i+1])-4:len(beforeBossData[i+1])-3] + beforeBossData[i+1][len(beforeBossData[i+1])-3:len(beforeBossData[i+1])-2]) + tmp_mungcnt
+					bossData[j][6] = beforeBossData[i+1][tmp_msglen+2:len(beforeBossData[i+1])-1]
+					
+					if beforeBossData[i+1][tmp_msglen-3:tmp_msglen-2] != 0 and beforeBossData[i+1][tmp_msglen-4:tmp_msglen-3] == ' ':
+						bossMungCnt[j] = int(beforeBossData[i+1][tmp_msglen-3:tmp_msglen-2]) + tmp_mungcnt
+					elif beforeBossData[i+1][tmp_msglen-4:tmp_msglen-3] != ' ':
+						bossMungCnt[j] = int(beforeBossData[i+1][tmp_msglen-4:tmp_msglen-3] + beforeBossData[i+1][tmp_msglen-3:tmp_msglen-2]) + tmp_mungcnt
 					else:
 						bossMungCnt[j] = 0
 		LoadChk = 0
@@ -616,6 +620,12 @@ async def on_message(msg):
 
 		for i in range(bossNum):
 			if message.content.startswith(bossData[i][0] +'컷'):
+				if hello.find('  ') != -1 :
+					bossData[i][6] = hello[hello.find('  ')+2:]
+					hello = hello[:hello.find('  ')]
+				else:
+					bossData[i][6] = ''
+					
 				tmp_msg = bossData[i][0] +'컷'
 				if len(hello) > len(tmp_msg) + 3 :
 					if hello.find(':') != -1 :
@@ -667,6 +677,12 @@ async def on_message(msg):
 		##################################
 
 			if message.content.startswith(bossData[i][0] +'멍'):
+				if hello.find('  ') != -1 :
+					bossData[i][6] = hello[hello.find('  ')+2:]
+					hello = hello[:hello.find('  ')]
+				else:
+					bossData[i][6] = ''
+					
 				tmp_msg = bossData[i][0] +'멍'
 				tmp_now = datetime.datetime.now() + datetime.timedelta(hours = int(basicSetting[0]))
 				if tmp_bossTime[i] != bossTime[i]:
@@ -718,6 +734,12 @@ async def on_message(msg):
 
 		for i in range(bossNum):
 			if message.content.startswith(bossData[i][0] +'예상'):
+				if hello.find('  ') != -1 :
+					bossData[i][6] = hello[hello.find('  ')+2:]
+					hello = hello[:hello.find('  ')]
+				else:
+					bossData[i][6] = ''
+					
 				tmp_msg = bossData[i][0] +'예상'
 				if len(hello) > len(tmp_msg) + 3 :
 					if hello.find(':') != -1 :
@@ -1106,14 +1128,14 @@ async def on_message(msg):
 						if bossTimeString[i] != '99:99:99' :
 							if bossData[i][2] == '0' :
 								if bossMungCnt[i] == 0 :
-									information += bossData[i][0] + '(' + bossData[i][1] + '.' + bossData[i][5] + ') : ' + bossTimeString[i] + '\n'
+									information += bossData[i][0] + ' : ' + bossTimeString[i] + ' ' + bossData[i][6] + '\n'
 								else :
-									information +=  bossData[i][0] + '(' + bossData[i][1] + '.' + bossData[i][5] + ') : ' + bossTimeString[i] + ' (미입력 ' + str(bossMungCnt[i]) + '회)' + '\n'
+									information += bossData[i][0] + ' : ' + bossTimeString[i] + ' (미 ' + str(bossMungCnt[i]) + '회)' + ' ' + bossData[i][6] + '\n'
 							else : 
 								if bossMungCnt[i] == 0 :
-									information +=  bossData[i][0] + '(' + bossData[i][1] + '.' + bossData[i][5] + ') : ' + bossTimeString[i] + '\n'
+									information += bossData[i][0] + ' : ' + bossTimeString[i] + ' ' + bossData[i][6] + '\n'
 								else :
-									information +=  bossData[i][0] + '(' + bossData[i][1] + '.' + bossData[i][5] + ') : ' + bossTimeString[i] + ' (멍 ' + str(bossMungCnt[i]) + '회)' + '\n'
+									information += bossData[i][0] + ' : ' + bossTimeString[i] + ' (멍 ' + str(bossMungCnt[i]) + '회)' + ' ' + bossData[i][6] + '\n'
 									
 			if len(information) != 0:
 				information = "```" + information + "```"
