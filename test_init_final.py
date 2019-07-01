@@ -59,6 +59,7 @@ repo_restart = g.get_repo(git_access_repo_restart)
 def init():
 	global basicSetting
 	global bossData
+	global fixed_bossData
 
 	global bossNum
 	global chkvoicechannel
@@ -90,7 +91,9 @@ def init():
 	global channel_type
 	
 	tmp_bossData = []
+	tmp_fixed_bossData = []
 	f = []
+	fb = []
 	#print("test")
 	
 	inidata = repo.get_contents("test_setting.ini")
@@ -98,8 +101,16 @@ def init():
 	file_data1 = file_data1.decode('utf-8')
 	inputData = file_data1.split('\n')
 
+	fixed_inidata = repo.get_contents("fixed_boss.ini")
+	file_data2 = base64.b64decode(fixed_inidata.content)
+	file_data2 = file_data2.decode('utf-8')
+	fixed_inputData = file_data2.split('\n')
+
 	for i in range(inputData.count('\r')):
 		inputData.remove('\r')
+
+	for i in range(fixed_inputData.count('\r')):
+		fixed_inputData.remove('\r')
 
 	basicSetting.append(inputData[0][11:])   #timezone
 	basicSetting.append(inputData[4][15:])   #before_alert
@@ -117,17 +128,26 @@ def init():
 	#print (inputData, len(inputData))
 	
 	bossNum = int((len(inputData)-7)/5)
+
+	fixed_bossNum = int(len(fixed_inputData)/4) 
 	
 	#print (bossNum)
 	
 	for i in range(bossNum):
 		tmp_bossData.append(inputData[i*5+7:i*5+12])
+
+	for i in range(fixed_bossNum):
+		tmp_fixed_bossData.append(fixed_inputData[i*4:i*4+4]) #카톡
 		
 	#print (tmp_bossData)
 		
 	for j in range(bossNum):
 		for i in range(len(tmp_bossData[j])):
 			tmp_bossData[j][i] = tmp_bossData[j][i].strip()
+
+	for j in range(fixed_bossNum):
+		for i in range(len(tmp_fixed_bossData[j])):
+			tmp_fixed_bossData[j][i] = tmp_fixed_bossData[j][i].strip()
 	
 	for j in range(bossNum):
 		tmp_len = tmp_bossData[j][1].find(':')
@@ -140,6 +160,18 @@ def init():
 		f.append('')                              #6 : 메세지
 		bossData.append(f)
 		f = []
+
+	for j in range(fixed_bossNum):
+		tmp_fixed_len = tmp_fixed_bossData[j][1].find(':')
+		fb.append(tmp_fixed_bossData[j][0][11:])               #0 : 보스명
+		fb.append(tmp_fixed_bossData[j][1][11:tmp_fixed_len])  #1 : 시
+		fb.append(tmp_fixed_bossData[j][1][tmp_fixed_len+1:])  #2 : 분
+		fb.append(tmp_fixed_bossData[j][2][20:])               #3 : 분전 알림멘트
+		fb.append(tmp_fixed_bossData[j][3][13:])               #4 : 젠 알림멘트
+		fixed_bossData.append(fb)
+		fb = []
+		
+	print (fixed_bossData)
 
 	print ('보탐봇 재시작 시간 : ', basicSetting[4], '시 ', basicSetting[5], '분')
 	print ('보스젠알림시간1 : ', basicSetting[1])
