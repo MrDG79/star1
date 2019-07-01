@@ -50,18 +50,17 @@ channel_type = []
 
 
 client = discord.Client()
-'''
+
 access_token = 'NTAzOTA5NDIyMzg5NTI2NTI5.Dq9WAA.3Z3HAgSvYi6I3tg56Eg8TQzcJu8'
 git_access_token = '0f08d5b3ca4bc3a32ef20413457655a5c6ea17ee'
 git_access_repo = 'chochul12/bossbotDB'		
 git_access_repo_restart = 'chochul12/bossbot'
 '''
-
 access_token = os.environ["BOT_TOKEN"]			
 git_access_token = os.environ["GIT_TOKEN"]			
 git_access_repo = os.environ["GIT_REPO"]			
 git_access_repo_restart = os.environ["GIT_REPO_RESTART"]			
-
+'''
 g = Github(git_access_token)
 repo = g.get_repo(git_access_repo)
 repo_restart = g.get_repo(git_access_repo_restart)
@@ -304,7 +303,7 @@ async def my_background_task():
 				if fixed_bossTime[i] <= now :
 					fixed_bossTime[i] = now+datetime.timedelta(days=int(1))
 					embed = discord.Embed(
-							description= fixed_bossData[i][0] + '탐 ' + fixed_bossData[i][4],
+							description= "```" + bossData[i][0] + '탐 ' + bossData[i][4] + "```" ,
 							color=0x00ff00
 							)
 					await client.send_message(client.get_channel(channel), embed=embed, tts=False)
@@ -338,7 +337,6 @@ async def my_background_task():
 					bossTime[i] = now+datetime.timedelta(days=365)
 					embed = discord.Embed(
 							description= "```" + bossData[i][0] + '탐 ' + bossData[i][4] + "```" ,
-
 							color=0x00ff00
 							)
 					await client.send_message(client.get_channel(channel), embed=embed, tts=False)
