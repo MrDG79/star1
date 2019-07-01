@@ -1011,6 +1011,8 @@ async def on_message(msg):
 
 			bossTime = []
 			tmp_bossTime = []
+			
+			fixed_bossTime = []
 
 			bossTimeString = []
 			bossDateString = []
