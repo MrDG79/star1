@@ -304,7 +304,7 @@ async def my_background_task():
 				if fixed_bossTime[i] <= now :
 					fixed_bossTime[i] = now+datetime.timedelta(days=int(1))
 					embed = discord.Embed(
-							description= "```" + bossData[i][0] + '탐 ' + bossData[i][4] + "```" ,
+							description= "```" + fixed_bossData[i][0] + '탐 ' + fixed_bossData[i][4] + "```" ,
 							color=0x00ff00
 							)
 					await client.send_message(client.get_channel(channel), embed=embed, tts=False)
