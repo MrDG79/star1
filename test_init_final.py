@@ -19,6 +19,7 @@ basicSetting = []
 bossData = []
 
 bossNum = 0
+fixed_bossNum = 0
 chkvoicechannel = 0
 chkrelogin = 0
 chflg = 0
@@ -66,6 +67,7 @@ def init():
 	global chkrelogin
 
 	global bossTime
+	global fixed_bossNum
 	global tmp_bossTime
 
 	global bossTimeString
@@ -190,6 +192,16 @@ def init():
 		bossMungFlag.append(False)
 		bossMungCnt.append(0)
 		
+	tmp_fixed_now = datetime.datetime.now() + datetime.timedelta(hours = int(basicSetting[0]))
+		
+	for i in range(fixed_bossNum):
+		fixed_bossTime.append(tmp_fixed_now.replace(hour=int(fixed_bossData[i][1]), minute=int(fixed_bossData[i][2]), second = int(0)))
+
+	for i in range(fixed_bossNum):
+		if fixed_bossTime[i] < tmp_fixed_now :
+			fixed_bossTime[i] = fixed_bossTime[i] + datetime.timedelta(days=int(1))
+		
+		
 	#inidata.close()
 
 init()
@@ -212,6 +224,7 @@ async def my_background_task():
 	global bossData
 
 	global bossNum
+	global fixed_bossNum
 	global chkvoicechannel
 	global chkrelogin
 
@@ -272,6 +285,15 @@ async def my_background_task():
 					repo_restart.update_file(contents12.path, "restart_1", "", contents12.sha)
 					
 				endTime = endTime + datetime.timedelta(days = 1)
+			
+			for i in range(fixed_bossNum):
+				if fixed_bossTime[i] <= now :
+					fixed_bossTime[i] = now+datetime.timedelta(days=int(1))
+					embed = discord.Embed(
+							description= fixed_bossData[i][0] + '탐 ' + fixed_bossData[i][4],
+							color=0x00ff00
+							)
+					await client.send_message(client.get_channel(channel), embed=embed, tts=False)
 
 			for i in range(bossNum):
 				#print (bossData[i][0], bossTime[i])
