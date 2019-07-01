@@ -28,6 +28,8 @@ LoadChk = 0
 bossTime = []
 tmp_bossTime = []
 
+fixed_bossTime = []
+
 bossTimeString = []
 bossDateString = []
 tmp_bossTimeString = []
@@ -63,11 +65,12 @@ def init():
 	global fixed_bossData
 
 	global bossNum
+	global fixed_bossNum
 	global chkvoicechannel
 	global chkrelogin
 
 	global bossTime
-	global fixed_bossNum
+	global fixed_bossTime
 	global tmp_bossTime
 
 	global bossTimeString
@@ -229,6 +232,7 @@ async def my_background_task():
 	global chkrelogin
 
 	global bossTime
+	global fixed_bossTime
 	global tmp_bossTime
 
 	global bossTimeString
