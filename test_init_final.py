@@ -294,10 +294,11 @@ async def my_background_task():
 				if fixed_bossTime[i] <= now :
 					fixed_bossTime[i] = now+datetime.timedelta(days=int(1))
 					embed = discord.Embed(
-							description= fixed_bossData[i][0] + '탐 ' + fixed_bossData[i][4],
+							description= "```" + fixed_bossData[i][0] + '탐 ' + fixed_bossData[i][4] + "```" ,
 							color=0x00ff00
 							)
 					await client.send_message(client.get_channel(channel), embed=embed, tts=False)
+					await PlaySound(voice_client1, './sound/' + fixed_bossData[i][0] + '젠.mp3')
 
 			for i in range(bossNum):
 				#print (bossData[i][0], bossTime[i])
