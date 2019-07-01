@@ -50,17 +50,18 @@ channel_type = []
 
 
 client = discord.Client()
-
+'''
 access_token = 'NTAzOTA5NDIyMzg5NTI2NTI5.Dq9WAA.3Z3HAgSvYi6I3tg56Eg8TQzcJu8'
 git_access_token = '0f08d5b3ca4bc3a32ef20413457655a5c6ea17ee'
 git_access_repo = 'chochul12/bossbotDB'		
 git_access_repo_restart = 'chochul12/bossbot'
 '''
+
 access_token = os.environ["BOT_TOKEN"]			
 git_access_token = os.environ["GIT_TOKEN"]			
 git_access_repo = os.environ["GIT_REPO"]			
 git_access_repo_restart = os.environ["GIT_REPO_RESTART"]			
-'''
+
 g = Github(git_access_token)
 repo = g.get_repo(git_access_repo)
 repo_restart = g.get_repo(git_access_repo_restart)
