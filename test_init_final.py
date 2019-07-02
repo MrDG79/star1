@@ -1226,17 +1226,17 @@ async def on_message(msg):
 				information = '``` ```'
 
 			embed = discord.Embed(
-					title = "----- 보스탐 정보 -----",
-					description= information,
+					title = "----- 고 정 보 스 -----",
+					description= fixed_information,
 					color=0x0000ff
+					)
+			embed.add_field(
+					name="----- 보스탐 정보 -----",
+					value= information
 					)
 			embed.add_field(
 					name="----- 미예약 보스 -----",
 					value= temp_bossTimeSTR1
-					)
-			embed.add_field(
-					name="----- 고 정 보 스 -----",
-					value= fixed_information
 					)
 			await client.send_message(client.get_channel(channel), embed=embed, tts=False)
 
