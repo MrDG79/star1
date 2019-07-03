@@ -333,7 +333,7 @@ async def my_background_task():
 								color=0x00ff00
 								)
 						await client.send_message(client.get_channel(channel), embed=embed, tts=False)
-						await PlaySound(voice_client1, './sound/' + fixed_bossData[i][0] + '젠.mp3')
+						#await PlaySound(voice_client1, './sound/' + fixed_bossData[i][0] + '젠.mp3')
 
 				if bossMungFlag[i] == True:
 					if (bossTime[i]+datetime.timedelta(days=-365)) <= aftr:
