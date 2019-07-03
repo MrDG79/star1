@@ -130,8 +130,11 @@ def init():
 	for i in range(len(basicSetting)):
 		basicSetting[i] = basicSetting[i].strip()
 	
-	basicSetting[6] = int(basicSetting[6])
-	basicSetting[7] = int(basicSetting[7])
+	if basicSetting[6] != "":
+		basicSetting[6] = int(basicSetting[6])
+		
+	if basicSetting[7] != "":
+		basicSetting[7] = int(basicSetting[7])
 	#print (inputData, len(inputData))
 	
 	bossNum = int((len(inputData)-7)/5)
