@@ -338,7 +338,7 @@ async def my_background_task():
 					if (bossTime[i]+datetime.timedelta(days=-365)) <= aftr:
 						if basicSetting[2] != '0':
 							if bossData[i][2] == '0':
-								await client.send_message(client.get_channel(channel),"```" +  bossData[i][0] + ' 미입력 됐습니다.```', tts=False)
+								await client.get_channel(channel).send("```" +  bossData[i][0] + ' 미입력 됐습니다.```', tts=False)
 								await PlaySound(voice_client1, './sound/' + bossData[i][0] + '미입력.mp3')
 								bossFlag[i] = False
 								bossFlag0[i] = False
@@ -547,9 +547,9 @@ async def on_ready():
 	if basicSetting[6] != "" and basicSetting[7] != "" :
 		#print ('join channel')
 		await JointheVC(client.get_channel(basicSetting[6]), client.get_channel(basicSetting[7]))
-		await client.send_message(client.get_channel(basicSetting[7]), '< 텍스트채널 [' + client.get_channel(basicSetting[7]).name + '] 접속완료>', tts=False)
-		await client.send_message(client.get_channel(basicSetting[7]), '< 음성채널 [' + client.get_channel(basicSetting[6]).name + '] 접속완료>', tts=False)
-		await client.send_message(client.get_channel(basicSetting[7]), '< 보탐봇 재시작 설정시간 ' + basicSetting[4] + '시 ' + basicSetting[5] + '분입니다. >', tts=False)
+		await client.get_channel(basicSetting[7]).send('< 텍스트채널 [' + client.get_channel(basicSetting[7]).name + '] 접속완료>', tts=False)
+		await client.get_channel(basicSetting[7]).send('< 음성채널 [' + client.get_channel(basicSetting[6]).name + '] 접속완료>', tts=False)
+		await client.get_channel(basicSetting[7]).send('< 보탐봇 재시작 설정시간 ' + basicSetting[4] + '시 ' + basicSetting[5] + '분입니다. >', tts=False)
 		channel = basicSetting[7]
 		chflg = 1
 
@@ -643,7 +643,7 @@ async def on_message(msg):
 	if client.get_channel(channel) != msg.channel :
 		return None
 	else :
-		message = await client.get_message(client.get_channel(channel), msg.id)
+		message = await client.get_channel(channel).fetch_message(msg.id)
 		
 		##################################
 
@@ -679,8 +679,9 @@ async def on_message(msg):
 			inputData_textCH = file_data_textCH.split('\n')
 			
 			for i in range(len(inputData_textCH)):
-				if inputData_textCH[i] == 'textchannel = \r':
+				if inputData_textCH[i] == 'textchannel = ' + str(basicSetting[7]) + '\r':
 					inputData_textCH[i] = 'textchannel = ' + str(channel) + '\r'
+					basicSetting[7] = int(channel)
 			
 			result_textCH = '\n'.join(inputData_textCH)
 
@@ -870,13 +871,10 @@ async def on_message(msg):
 				print ('<' + bossData[i][0] + ' 삭제완료>')
 			
 		if message.content.startswith('!오빠'):
-			#await client.send_message(channel, '오빠달려려어어어어어어 ', tts=False)
 			await PlaySound(voice_client1, './sound/오빠.mp3')
 		if message.content.startswith('!언니'):
-			#await client.send_message(channel, '오빠달려려어어어어어어 ', tts=False)
 			await PlaySound(voice_client1, './sound/언니.mp3')
 		if message.content.startswith('!형'):
-			#await client.send_message(channel, '오빠달려려어어어어어어 ', tts=False)
 			await PlaySound(voice_client1, './sound/형.mp3')
 
 		##################################
@@ -952,7 +950,7 @@ async def on_message(msg):
 			tmp_sayMessage = message.content
 			sayMessage = tmp_sayMessage[3:]
 			await MakeSound(message.author.display_name +'님이.' + sayMessage, './sound/say')
-			await client.get_channel(channel).send("```< " +id+ " >님이 \"" + sayMessage + "\"```", tts=False)
+			await client.get_channel(channel).send("```< " + msg.author.nick + " >님이 \"" + sayMessage + "\"```", tts=False)
 			await PlaySound(voice_client1, './sound/say.mp3')
 
 		##################################
@@ -977,7 +975,7 @@ async def on_message(msg):
 		#############################
 
 		if message.content.startswith('!소환'):
-			voice_channel = message.author.voice.voice_channel
+			voice_channel = message.author.voice.channel
 			
 			if basicSetting[6] == "":
 				inidata_voiceCH = repo.get_contents("test_setting.ini")
