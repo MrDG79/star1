@@ -1162,7 +1162,7 @@ async def on_message(msg):
 
 		##################################
 
-		if message.content.startswith('보스탐'):
+		if message.content.startswith('보스탐') or message.content.startswith('/1') or message.content.startswith('/보스'):
 			for i in range(bossNum):
 				for j in range(bossNum):
 					if bossTimeString[i] and bossTimeString[j] != '99:99:99':
@@ -1189,7 +1189,7 @@ async def on_message(msg):
 			for i in range(fixed_bossNum):
 					tmp_timeSTR = fixed_bossTime[i].strftime('%H:%M:%S')
 					fixed_information += fixed_bossData[i][0] + ' : ' + tmp_timeSTR + '\n'
-
+						
 			fixed_information = '```' + fixed_information + '```'
 
 			temp_bossTime1 = []
@@ -1204,7 +1204,6 @@ async def on_message(msg):
 				temp_bossTimeSTR1 = '``` ```'
 				
 			information = ''
-			#information1 = '----- 보스탐 정보 -----\n'
 			for timestring in sorted(datelist):
 				for i in range(bossNum):
 					if timestring == bossTime[i]:
@@ -1221,7 +1220,8 @@ async def on_message(msg):
 									information += bossData[i][0] + ' : ' + bossTimeString[i] + ' (멍 ' + str(bossMungCnt[i]) + '회)' + ' ' + bossData[i][6] + '\n'
 									
 			if len(information) != 0:
-				information = "```" + information + "```"
+				information = "\n  ```" + information + "```"
+				
 			else :
 				information = '``` ```'
 
@@ -1241,7 +1241,14 @@ async def on_message(msg):
 					inline = False
 					)
 			await client.get_channel(channel).send(embed=embed, tts=False)
-
+			#await client.get_channel(channel).send("```\n" + fixed_information + "```")
+			#await client.get_channel(channel).send("```\n" + information  + "```")
+			#await client.get_channel(channel).send("```fix\n" + temp_bossTimeSTR1 + "```")
+			#await client.get_channel(channel).send("```\n" + fixed_information + "```")
+			#await client.get_channel(channel).send(fixed_information)
+			#await client.get_channel(channel).send(information)
+			#await client.get_channel(channel).send(temp_bossTimeSTR1)
+                        
 			await dbSave()
 
 		##################################
@@ -1249,5 +1256,21 @@ async def on_message(msg):
 		if message.content.startswith('!현재시간'):
 			now3 = datetime.datetime.now() + datetime.timedelta(hours = int(basicSetting[0]))
 			await client.get_channel(channel).send(now3.strftime('%Y-%m-%d') + '   ' + now3.strftime('%H:%M:%S'), tts=False)
+
+		if message.content.startswith('/리젠'):
+			embed = discord.Embed(
+					title='----- 리스폰 보스 -----',
+					description= ' ')
+			embed.add_field(name='1시간', value='기감', inline=False)
+			embed.add_field(name='2시간', value='서드,북드,카파,질풍,광풍,이프,자웜,개미', inline=False)
+			embed.add_field(name='3시간', value='중드,동드,거드,마요,산적,자크,스피,가스트,대흑장로', inline=False)
+			embed.add_field(name='4시간', value='아르,도펠', inline=False)
+			embed.add_field(name='5시간', value='에자', inline=False)
+			embed.add_field(name='6시간', value='감시자 데몬', inline=False)
+			embed.add_field(name='6시간 53', value='피닉스', inline=False)
+			embed.add_field(name='7시간', value='데스나이트', inline=False)
+			embed.add_field(name='8시간', value='리칸트', inline=False)
+			embed.add_field(name='10시간', value='커츠', inline=False)
+			await client.get_channel(channel).send(embed=embed, tts=False)
 
 client.run(access_token)
