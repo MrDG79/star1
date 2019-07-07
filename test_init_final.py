@@ -1232,11 +1232,13 @@ async def on_message(msg):
 					)
 			embed.add_field(
 					name="----- 보스탐 정보 -----",
-					value= information
+					value= information,
+					inline = False
 					)
 			embed.add_field(
 					name="----- 미예약 보스 -----",
-					value= temp_bossTimeSTR1
+					value= temp_bossTimeSTR1,
+					inline = False
 					)
 			await client.get_channel(channel).send(embed=embed, tts=False)
 
