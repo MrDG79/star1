@@ -978,46 +978,49 @@ async def on_message(msg):
 		#############################
 
 		if message.content.startswith('!소환'):
-			voice_channel = message.author.voice.channel
-			
-			if basicSetting[6] == "":
-				inidata_voiceCH = repo.get_contents("test_setting.ini")
-				file_data_voiceCH = base64.b64decode(inidata_voiceCH.content)
-				file_data_voiceCH = file_data_voiceCH.decode('utf-8')
-				inputData_voiceCH = file_data_voiceCH.split('\n')
-				
-				for i in range(len(inputData_voiceCH)):
-					if inputData_voiceCH[i] == 'voicechannel = \r':
-						inputData_voiceCH[i] = 'voicechannel = ' + str(voice_channel.id) + '\r'
-						basicSetting[6] = int(voice_channel.id)
-				
-				result_voiceCH = '\n'.join(inputData_voiceCH)
-				
-				contents = repo.get_contents("test_setting.ini")
-				repo.update_file(contents.path, "test_setting", result_voiceCH, contents.sha)
-				
-			elif basicSetting[6] != int(voice_channel.id):
-				inidata_voiceCH = repo.get_contents("test_setting.ini")
-				file_data_voiceCH = base64.b64decode(inidata_voiceCH.content)
-				file_data_voiceCH = file_data_voiceCH.decode('utf-8')
-				inputData_voiceCH = file_data_voiceCH.split('\n')
-				
-				for i in range(len(inputData_voiceCH)):
-					if inputData_voiceCH[i] == 'voicechannel = ' + str(basicSetting[6]) + '\r':
-						inputData_voiceCH[i] = 'voicechannel = ' + str(voice_channel.id) + '\r'
-						basicSetting[6] = int(voice_channel.id)
+			if message.author.voice == None:
+				await client.get_channel(channel).send('음성채널에 먼저 들어가주세요.', tts=False)
+			else:
+				voice_channel = message.author.voice.channel
 
-				result_voiceCH = '\n'.join(inputData_voiceCH)
+				if basicSetting[6] == "":
+					inidata_voiceCH = repo.get_contents("test_setting.ini")
+					file_data_voiceCH = base64.b64decode(inidata_voiceCH.content)
+					file_data_voiceCH = file_data_voiceCH.decode('utf-8')
+					inputData_voiceCH = file_data_voiceCH.split('\n')
 
-				contents = repo.get_contents("test_setting.ini")
-				repo.update_file(contents.path, "test_setting", result_voiceCH, contents.sha)
+					for i in range(len(inputData_voiceCH)):
+						if inputData_voiceCH[i] == 'voicechannel = \r':
+							inputData_voiceCH[i] = 'voicechannel = ' + str(voice_channel.id) + '\r'
+							basicSetting[6] = int(voice_channel.id)
 
-			if task1.cancelled != False:
-				task1.cancel()
-				print ('task cancle')
+					result_voiceCH = '\n'.join(inputData_voiceCH)
 
-			await JointheVC(voice_channel, channel)
-			await client.get_channel(channel).send('< 음성채널 [' + client.get_channel(voice_channel.id).name + '] 접속완료>', tts=False)
+					contents = repo.get_contents("test_setting.ini")
+					repo.update_file(contents.path, "test_setting", result_voiceCH, contents.sha)
+
+				elif basicSetting[6] != int(voice_channel.id):
+					inidata_voiceCH = repo.get_contents("test_setting.ini")
+					file_data_voiceCH = base64.b64decode(inidata_voiceCH.content)
+					file_data_voiceCH = file_data_voiceCH.decode('utf-8')
+					inputData_voiceCH = file_data_voiceCH.split('\n')
+
+					for i in range(len(inputData_voiceCH)):
+						if inputData_voiceCH[i] == 'voicechannel = ' + str(basicSetting[6]) + '\r':
+							inputData_voiceCH[i] = 'voicechannel = ' + str(voice_channel.id) + '\r'
+							basicSetting[6] = int(voice_channel.id)
+
+					result_voiceCH = '\n'.join(inputData_voiceCH)
+
+					contents = repo.get_contents("test_setting.ini")
+					repo.update_file(contents.path, "test_setting", result_voiceCH, contents.sha)
+
+				if task1.cancelled != False:
+					task1.cancel()
+					print ('task cancle')
+
+				await JointheVC(voice_channel, channel)
+				await client.get_channel(channel).send('< 음성채널 [' + client.get_channel(voice_channel.id).name + '] 접속완료>', tts=False)
 		
 		##################################
 					
